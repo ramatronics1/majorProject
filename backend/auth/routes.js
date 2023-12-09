@@ -96,4 +96,51 @@ route.post('/adminSignup', async (req, res) => {
     }
 });
 
+route.delete("/deleteDishes/:id",async(req,res)=>{
+  const {id} = req.params; 
+
+  await Dish.findByIdAndDelete(id);
+  res.redirect('/displayDishes')
+
+})
+
+route.put('/updateDishes/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, description, price, category, ingredients, isVegetarian } = req.body;
+
+  try {
+    const dish = await Dish.findById(id);
+
+    if (!dish) {
+      req.flash('error', 'Dish not found.');
+      return res.redirect('/campgrounds');
+    }
+
+    // const imageFiles = req.files.map((f) => ({ url: f.path, filename: f.filename }));
+    // dish.Image.push(...imageFiles);
+    dish.name = name;
+    dish.ingredients = ingredients;
+    dish.description = description;
+    dish.price = price;
+    dish.isVegetarian = isVegetarian;
+    dish.category = category;
+
+    await dish.save();
+
+    // if(req.body.deleteImages){
+    // for(let filename of req.body.deleteImages){
+    // await cloudinary.uploader.destroy(filename)
+    // }
+    // await campground.updateOne({$pull:{Image:{filename:{$in:req.body.deleteImages}}}})
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Failed to update the Dish.');
+    return res.redirect(`/Dish/${id}`); // Redirect to an appropriate error page or back to the form, as desired
+  }
+
+  req.flash('success', "You've successfully updated the Dish.");
+  res.redirect(`/campgrounds/${dish._id}`);
+});
+
+
 module.exports = route;
