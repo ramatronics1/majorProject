@@ -15,13 +15,15 @@ router.post('/clientLogin', async (req, res) => {
     if (found && found.dob === dob) {
       console.log(found)
     } else {
-      res.redirect('/home'); 
+      res.redirect('/'); 
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
 
 
 module.exports = router;

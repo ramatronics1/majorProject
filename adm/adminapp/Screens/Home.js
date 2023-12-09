@@ -25,10 +25,13 @@ const HomeScreen = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.button, styles.updateButton]} onPress={handleUpdateMenu}>
-          <Text style={styles.buttonText}>Update Menu</Text>
+          <Text style={styles.buttonText}>Add New Dish</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, styles.orderButton]} onPress={handleOrderList}>
-          <Text style={styles.buttonText}>Order List</Text>
+          <Text style={styles.buttonText}>List of Dishes</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, styles.orderButton]} onPress={handleOrderList}>
+          <Text style={styles.buttonText}>Orders</Text>
         </TouchableOpacity>
       </View>
 

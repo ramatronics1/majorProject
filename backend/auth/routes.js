@@ -110,9 +110,10 @@ route.put('/updateDishes/:id', async (req, res) => {
 
   try {
     const dish = await Dish.findById(id);
+    console.log(dish)
 
     if (!dish) {
-      req.flash('error', 'Dish not found.');
+
       return res.redirect('/campgrounds');
     }
 
@@ -134,12 +135,12 @@ route.put('/updateDishes/:id', async (req, res) => {
     // await campground.updateOne({$pull:{Image:{filename:{$in:req.body.deleteImages}}}})
   } catch (err) {
     console.error(err);
-    req.flash('error', 'Failed to update the Dish.');
-    return res.redirect(`/Dish/${id}`); // Redirect to an appropriate error page or back to the form, as desired
+    
+    return res.redirect(`/displayDishes`); // Redirect to an appropriate error page or back to the form, as desired
   }
 
-  req.flash('success', "You've successfully updated the Dish.");
-  res.redirect(`/campgrounds/${dish._id}`);
+ 
+  res.redirect(`/displayDishes`);
 });
 
 
