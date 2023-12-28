@@ -3,19 +3,23 @@ const router = express.Router();
 const { Auth, Order } = require('../models/clientSchema');
 
   
+router.get('/',(req,res)=>{
+
+})
 router.post('/clientLogin', async (req, res) => {
   
-    console.log(req.body)
+   console.log(req.body)
   const { usn, dob } = req.body;
 
   try {
     const found = await Auth.findOne({ usn: usn });
   
-    res.json(found)
-    if (found && found.dob === dob) {
-      console.log(found)
+    console.log(found)
+    if (found.dob === dob) {
+      res.json('exist')
+
     } else {
-      res.redirect('/home'); 
+      console.log('error')
     }
   } catch (error) {
     console.error(error);

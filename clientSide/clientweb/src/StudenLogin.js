@@ -1,83 +1,59 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-class StudentForm extends Component {
-  state = {
-    usn: '',
-    dob: '',
-    responseData: null,
-    error: null,
-  };
+const StudentLogin = () => {
+  const [usn, setUsn] = useState('');
+  const [dob, setDob] = useState('');
+const history=useNavigate();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  handleSubmit = async (evt) => {
-    evt.preventDefault();
-  
-    // Prepare data to be sent
-    const formData = {
-      usn: this.state.usn,
-      dob: this.state.dob,
-    };
-  
-    try {
-      const response = await axios.post('http://192.168.1.43:5000/clientLogin', formData);
-  
-      if (response.data && response.data.error) {
-        // Display error message
-        this.setState({ responseData: null, error: response.data.error });
-      } else {
-        // Successful login, update state with response data
-        this.setState({ responseData: response.data, error: null });
-        console.log(response.data); // Log the response from the server
-      }
-    } catch (error) {
-      console.error('Axios error:', error);
-  
-      // Handle other errors, e.g., network issues
-      this.setState({ responseData: null, error: 'Error fetching data. Please try again.' });
+    if (name === 'usn') {
+      setUsn(value);
+    } else if (name === 'dob') {
+      setDob(value);
     }
   };
-  
-  
 
-  render() {
-    return (
-      <div className="container">
-        <h1>Authentication</h1>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="usn">USN (University Serial Number):</label>
-          <input
-            type="text"
-            id="usn"
-            name="usn"
-            value={this.state.usn}
-            onChange={this.handleChange}
-            required
-          />
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-          <label htmlFor="dob">Date of Birth:</label>
+    try {
+      const response = await axios.post('http://192.168.1.43:5000/clientLogin', { usn, dob });
+      // Handle success, you can navigate to another page or update state as needed
+      if(response.data){
+        history('/home',{state:{id:usn}})
+      }
+      console.log('Login successful', response.data);
+    } catch (error) {
+      // Handle error, you can display an error message or perform other actions
+      console.error('Login error', error);
+    }
+  };
+
+  return (
+    <div>
+      <h1>Login</h1>
+      <form onSubmit={handleSubmit}>
+        <label>Email:</label>
+        <input type="text" name="usn" onChange={handleChange} value={usn} />
+
+        <label htmlFor="dob">Date of Birth:</label>
           <input
             type="date"
             id="dob"
             name="dob"
-            value={this.state.dob}
-            onChange={this.handleChange}
+           
+            onChange={handleChange}
             required
           />
 
-          <button type="submit">Authenticate</button>
-        </form>
 
-        {this.state.responseData && !this.state.error && (
-        <div>
-          <h2>Response from Server:</h2>
-          <pre>{JSON.stringify(this.state.responseData, null, 2)}</pre>
-        </div>
-      )}
-
-      {this.state.error && <p style={{ color: 'red' }}>{this.state.error}</p>}
+        <input type="submit" value="Login" />
+      </form>
     </div>
-    );
-  }
-}
+  );
+};
 
-export default StudentForm;
+export default StudentLogin;
