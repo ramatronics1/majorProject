@@ -29,7 +29,7 @@ const UploadScreen = () => {
         imageUrl,
       };
 
-      const response = await axios.post('http://192.168.1.43:5000/addNewDish', formData, {
+      const response = await axios.post('http://192.168.1.42:5000/addNewDish', formData, {
         headers: {
           'Content-Type': 'application/json',
         },

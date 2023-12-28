@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 const EditDishScreen = () => {
   const route = useRoute();
   const { dish } = route.params;
+  const navigation = useNavigation();
   
   const [name, setName] = useState(dish.name);
   const [description, setDescription] = useState(dish.description);
@@ -27,12 +29,12 @@ const EditDishScreen = () => {
         imageUrl,
       };
 
-      const response = await axios.put(`http://192.168.1.43:5000/editDish/${dish._id}`, formData, {
+      const response = await axios.put(`http://192.168.1.42:5000/updateDishes/${dish._id}`, formData, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
+      navigation.goBack()
       console.log(response.data);
       // Handle success, for example, show a success message or navigate to another screen.
     } catch (error) {
