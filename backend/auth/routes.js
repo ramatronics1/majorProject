@@ -1,6 +1,6 @@
 const express = require('express');
 const route = express.Router();
-
+const {cloudinary}=require('../cloudinary/index')
 const bcrypt = require('bcrypt');
 
 const { Review, Dish, Signup } = require('../models/adminSchema');
@@ -112,13 +112,13 @@ route.delete("/deleteDishes/:id",async(req,res)=>{
 route.put('/updateDishes/:id', upload.array('image'), async (req, res) => {
   const { id } = req.params;
   const { name, description, price, category, ingredients, isVegetarian, } = req.body;
-
+console.log(req.body)
   try {
     const dish = await Dish.findById(id);
-    console.log('fuck u')
+  
 
-   console.log("Headers:", req.headers);
-console.log("Body:", req.body);
+   
+
 
 
     const imageFiles = req.files.map((f) => ({ url: f.path, filename: f.filename }));
@@ -130,20 +130,30 @@ console.log("Body:", req.body);
     dish.isVegetarian = isVegetarian;
     dish.category = category;
 
-    console.log(dish)
+ 
     await dish.save();
 
-    console.log('after save')
+   
 
-    // if(req.body.deleteImages){
-    // for(let filename of req.body.deleteImages){
-    // await cloudinary.uploader.destroy(filename)
-    // }
-    // await campground.updateOne({$pull:{Image:{filename:{$in:req.body.deleteImages}}}})
+    if (req.body.deleteImages) {
+      
+      const deleteImages = Array.isArray(req.body.deleteImages) ? req.body.deleteImages : [req.body.deleteImages];
+  
+      
+          
+          const deletePromises = deleteImages.map(filename => cloudinary.uploader.destroy(filename));
+          await Promise.all(deletePromises);
+  
+          
+          await dish.updateOne({ $pull: { imageUrl: { filename: { $in: deleteImages } } } });
+  
+     
+  
+  }
   } catch (err) {
     console.error(err);
     
-    return res.redirect(`/displayDishes`); // Redirect to an appropriate error page or back to the form, as desired
+    return res.redirect(`/displayDishes`); 
   }
 
 

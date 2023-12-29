@@ -6,6 +6,7 @@ const EditDishScreen = () => {
   const location = useLocation();
   const loc = location.state.id;
  
+ 
   const [name, setName] = useState(loc.name);
   const [description, setDescription] = useState(loc.description);
   const [price, setPrice] = useState(loc.price);
@@ -23,17 +24,23 @@ const EditDishScreen = () => {
       formData.append('category', category);
       formData.append('ingredients', ingredients);
       formData.append('isVegetarian', isVegetarian.toString());
-      formData.append('image', image); // Updated to use the 'image' state
-      console.log("before req");
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
+      formData.append('image', image); 
+    
+
+      loc.imageUrl.forEach((image, index) => {
+        const checkBox = document.getElementById(`delete-image-${index}`);
+        if (checkBox && checkBox.checked) {
+          
+          formData.append('deleteImages', image.filename);
+        }
+      });
+     
       
       const response = await axios.put(`http://192.168.1.43:5000/updateDishes/${loc._id}`, formData);
-      console.log("after req")
+  
 
-      console.log(response.data);
-      // Handle success, for example, show a success message or navigate to another screen.
+
+      
     } catch (error) {
       console.error('Error updating dish:', error);
     
@@ -62,6 +69,17 @@ const EditDishScreen = () => {
         onChange={(e) => setIsVegetarian(e.target.value)}
         value={loc.isVegetarian}
       />
+      {loc.imageUrl.map((image, imageIndex) => (
+        <div key={imageIndex}>
+          <img
+            src={image.url}
+            alt={`Dish image ${imageIndex + 1}`}
+            style={{ width: '10%', height: 'auto', marginBottom: 8 }}
+          />
+        <input type='checkbox' id={`delete-image-${imageIndex}`} value={image.filename}/>
+          <label htmlFor={`delete-image-${imageIndex}`}>Delete</label>
+        </div>
+      ))}
       <button onClick={handleUpdate}>Update Dish</button>
     </div>
   );
