@@ -9,18 +9,21 @@ const multer = require('multer');
 const { storage } = require('../cloudinary/index');
 const upload = multer({ storage });
 
-route.post('/addNewDish', async (req, res) => {
+route.post('/addNewDish', upload.array('image'),async (req, res) => {
+
   console.log(req.body)
+  console.log(req.files)
  
   try {
     const { name, description, price, category, ingredients ,imageUrl,isVegetarian} = req.body;
-
+    
+   const imageFiles = req.files.map((f) => ({ url: f.path, filename: f.filename }));
     const newDish = new Dish({
       name: name,
       description: description,
       price: price,
       category: category,
-      imageUrl: imageUrl,
+      imageUrl: imageFiles,
       ingredients: ingredients, 
       isVegetarian:isVegetarian
     });
@@ -46,22 +49,23 @@ route.post('/addNewDish', async (req, res) => {
     }
   });
 route.post('/adminLogin', async (req, res) => {
-  
+ 
 
     const { email, password } = req.body;
 
     const saltRounds = 10;
     try {
         const user = await Signup.findOne({ email });
-
+      console.log(user)
         if (user) {
             const validPassword = await bcrypt.compare(password, user.password);
 
             if (validPassword) {
-                
+                console.log(validPassword)
                 console.log("logged in")
+                res.json('exist')
 
-                res.status(200).json({ success: true, message: 'Login successful' });
+             
             } else {
                 res.status(401).json({ success: false, message: 'Invalid email or password' });
             }
@@ -76,6 +80,7 @@ route.post('/adminLogin', async (req, res) => {
 
 route.post('/adminSignup', async (req, res) => {
     const { email, password } = req.body;
+    console.log(req.body)
 
     try {
         const saltRounds = 10;
@@ -104,21 +109,20 @@ route.delete("/deleteDishes/:id",async(req,res)=>{
 
 })
 
-route.put('/updateDishes/:id', async (req, res) => {
+route.put('/updateDishes/:id', upload.array('image'), async (req, res) => {
   const { id } = req.params;
-  const { name, description, price, category, ingredients, isVegetarian } = req.body;
+  const { name, description, price, category, ingredients, isVegetarian, } = req.body;
 
   try {
     const dish = await Dish.findById(id);
-    console.log(dish)
+    console.log('fuck u')
 
-    if (!dish) {
+   console.log("Headers:", req.headers);
+console.log("Body:", req.body);
 
-      return res.redirect('/campgrounds');
-    }
 
-    // const imageFiles = req.files.map((f) => ({ url: f.path, filename: f.filename }));
-    // dish.Image.push(...imageFiles);
+    const imageFiles = req.files.map((f) => ({ url: f.path, filename: f.filename }));
+    dish.imageUrl.push(...imageFiles);
     dish.name = name;
     dish.ingredients = ingredients;
     dish.description = description;
@@ -126,7 +130,10 @@ route.put('/updateDishes/:id', async (req, res) => {
     dish.isVegetarian = isVegetarian;
     dish.category = category;
 
+    console.log(dish)
     await dish.save();
+
+    console.log('after save')
 
     // if(req.body.deleteImages){
     // for(let filename of req.body.deleteImages){
@@ -139,8 +146,7 @@ route.put('/updateDishes/:id', async (req, res) => {
     return res.redirect(`/displayDishes`); // Redirect to an appropriate error page or back to the form, as desired
   }
 
- 
-  res.redirect(`/displayDishes`);
+
 });
 
 

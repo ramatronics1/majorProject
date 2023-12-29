@@ -22,21 +22,20 @@ const DisplayDishes = () => {
   }, []);
 
   const handleEdit = (dish) => {
-    // Navigate to the EditDishScreen and pass the dish data as a parameter
+    
     navigation.navigate('EditDishScreen', { dish });
   };
 
   const handleDelete = async (dishId) => {
     try {
-      // Send a DELETE request to the server
+      
       const response = await axios.delete(`http://192.168.1.42:5000/deleteDishes/${dishId}`);
-      console.log(response.data); // Log the response from the server
+      console.log(response.data); 
 
-      // Remove the deleted dish from the local state
       setDishes((prevDishes) => prevDishes.filter((dish) => dish._id !== dishId));
     } catch (error) {
       console.error('Error deleting dish:', error);
-      // Handle error, for example, show an error message.
+    
     }
   };
 

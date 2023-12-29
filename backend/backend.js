@@ -22,6 +22,7 @@ const corsOptions = {
   app.use(cors(corsOptions));
   app.use(routes)
   app.use(clientRoutes)
+ 
   
 mongoose.connect('mongodb://localhost:27017/majorproject')
     .then(()=>{
@@ -34,6 +35,6 @@ mongoose.connect('mongodb://localhost:27017/majorproject')
    
 
 
-app.listen(5000,'192.168.1.42' ,()=>{
+app.listen(5000,'192.168.1.43' ,()=>{
     console.log('server running')
 })

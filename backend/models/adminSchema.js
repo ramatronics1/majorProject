@@ -35,7 +35,7 @@ const dishSchema = new mongoose.Schema({
   
   },
   imageUrl: {
-    type: String,
+    type: [imageSchema],
   },
   ingredients: {
     type: [String], 

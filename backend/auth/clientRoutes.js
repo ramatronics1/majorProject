@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { Auth, Order } = require('../models/clientSchema');
+const { Auth } = require('../models/clientSchema');
+const {Dish}=require('../models/adminSchema')
 
   
 router.get('/',(req,res)=>{
@@ -19,16 +20,32 @@ router.post('/clientLogin', async (req, res) => {
       res.json('exist')
 
     } else {
-<<<<<<< HEAD
       console.log('error')
-=======
-      res.redirect('/'); 
->>>>>>> 7cd6b7aa2966cb11a8dd239bd9294cc3fd397f7a
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+router.get('/fetchDishes', async (req, res) => {
+  
+ 
+
+
+ try {
+   const found = await Dish.find();
+ 
+   
+   if (found) {
+     res.json(found)
+
+   } else {
+     res.json('No dishes or error fetching')
+   }
+ } catch (error) {
+   console.error(error);
+   res.status(500).json({ error: 'Internal Server Error' });
+ }
 });
 
 
