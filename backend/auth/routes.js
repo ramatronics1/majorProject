@@ -159,5 +159,9 @@ console.log(req.body)
 
 });
 
-
+route.post('/fetchDishes/:id',async(req,res)=>{
+  const id=req.params;
+  const dish=dish.findById(id);
+  console.log(dish)
+})
 module.exports = route;

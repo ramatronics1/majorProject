@@ -29,7 +29,7 @@ const StudentLogin = () => {
       }
       console.log('Login successful', response.data);
     } catch (error) {
-      // Handle error, you can display an error message or perform other actions
+      
       console.error('Login error', error);
     }
   };
@@ -41,16 +41,7 @@ const StudentLogin = () => {
         <label>USN:</label>
         <input type="text" name="usn" onChange={handleChange} value={usn} />
 
-        <label htmlFor="dob">Date of Birth:</label>
-        <input
-          type="date"
-          id="dob"
-          name="dob"
-          onChange={handleChange}
-          required
-        />
 
-        <input type="submit" value="Login" />
       </form>
     </div>
   );

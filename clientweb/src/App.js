@@ -8,6 +8,8 @@ import AdminLogin from './AdminDashboard/LoginPage';
 import UploadScreen from './AdminDashboard/UploadScreen'
 import EditDishScreen from './AdminDashboard/EditDishScreen'
 import DisplayDishes from './AdminDashboard/DisplayDishes';
+import ViewDish from './ClientDashBoard/ViewDish';
+import AddtoCart from './ClientDashBoard/addtoCart';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="/UploadScreen" element={<UploadScreen />} />
           <Route path="/EditDishScreen" element={<EditDishScreen />} />
           <Route path="/DisplayDishes" element={<DisplayDishes/>} />
+          <Route path="/ViewDishes" element={<ViewDish/>} />
+          <Route path="/addtoCart" element={<AddtoCart/>} />
 
         
         </Routes>
