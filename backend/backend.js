@@ -35,6 +35,6 @@ mongoose.connect('mongodb://localhost:27017/majorproject')
    
 
 
-app.listen(5000,'192.168.1.43' ,()=>{
+app.listen(5000,'192.168.1.39' ,()=>{
     console.log('server running')
 })

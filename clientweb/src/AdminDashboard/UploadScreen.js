@@ -26,7 +26,7 @@ const UploadScreen = () => {
       formData.append('isVegetarian', isVegetarian.toString());
       formData.append('image', image);
 
-      const response = await axios.post('http://192.168.1.43:5000/addNewdiSH', formData);
+      const response = await axios.post('http://192.168.1.39:5000/addNewdiSH', formData);
 
       console.log(response.data);
       // Handle success, for example, show a success message or navigate to another screen.

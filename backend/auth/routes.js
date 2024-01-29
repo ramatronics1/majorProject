@@ -24,6 +24,7 @@ route.post('/addNewDish', upload.array('image'),async (req, res) => {
       price: price,
       category: category,
       imageUrl: imageFiles,
+      quantity:1,
       ingredients: ingredients, 
       isVegetarian:isVegetarian
     });

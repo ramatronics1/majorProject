@@ -1,66 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const AddtoCart = () => {
-  const location = useLocation();
-  const { dishesWithDetails } = location.state || {};
+const AddtoCart = ({dish,setDish,handleChange}) => {
+  const [price,setPrice]=useState(0)
+ 
+  
+  
+  const handlePrice = ()=>{
+    let ans = 0;
+    
+    dish.map((item)=>(
+        ans += item.quantity * item.price
+    ))
+    setPrice(ans);
+}
 
-  // Set up a state for the quantities of dishes
-  const [quantities, setQuantities] = useState({});
+const handleSubmit=()=>{
 
-  // Initialize the quantities state with the quantities of dishesWithDetails
-  useEffect(() => {
-    if (dishesWithDetails) {
-      const initialQuantities = dishesWithDetails.reduce((acc, dish) => {
-        acc[dish._id] = dish.quantity;
-        return acc;
-      }, {});
-      setQuantities(initialQuantities);
-    }
-  }, [dishesWithDetails]);
-
-  const handleQuantityChange = (event, dish) => {
-    const newQuantity = parseInt(event.target.value, 10) || 0;
-    setQuantities(prev => ({ ...prev, [dish._id]: newQuantity }));
-  };
-
-  const hasDishes = dishesWithDetails && dishesWithDetails.length > 0;
-
+}
+useEffect(()=>{
+  handlePrice();
+})
   return (
+    
     <div>
-      <h1>Review Your Order</h1>
-      {hasDishes ? (
-        dishesWithDetails.map((dish) => (
-          <div key={dish._id} style={{ marginBottom: "20px" }}>
-            <h3>{dish.name}</h3>
-            <p><strong>Description:</strong> {dish.description}</p>
-            <p><strong>Price:</strong> ${dish.price}</p>
-            <p><strong>Quantity:</strong> {quantities[dish._id] || dish.quantity}</p>
-            {dish.imageUrl.map((image, imageIndex) => (
-              <img
-                key={`${dish._id}-image-${imageIndex}`} // Ensure unique key
-                src={image.url}
-                alt={`Description of image ${imageIndex + 1}`}
-                style={{ width: '100px', height: 'auto', marginBottom: '8px' }}
-              />
-            ))}
-            <label htmlFor={`quantity-${dish._id}`}>Update Quantity:</label>
-            <input
-              type="number"
-              id={`quantity-${dish._id}`}
-              name="quantity"
-              min="0"
-              value={quantities[dish._id] || dish.quantity}
-              onChange={(e) => handleQuantityChange(e, dish)}
-            />
-            <p><strong>Total Amount:</strong> ${(quantities[dish._id] || dish.quantity) * dish.price}</p>
-          </div>
-        ))
-      ) : (
-        <p>No items added to the cart.</p>
-      )}
+  {dish.map((item) => (
+    <div key={`cart-${item._id}`} style={{ marginBottom: '20px' }}>
+      <h3>{item.name}</h3>
+      <p><strong>Description:</strong> {item.description}</p>
+      <p><strong>Price:</strong> ${item.price}</p>
+      <p><strong>Category:</strong> {item.category}</p>
+      <p><strong>Ingredients:</strong> {item.ingredients.join(', ')}</p>
+      <p><strong>Is Vegetarian:</strong> {item.isVegetarian ? 'Yes' : 'No'}</p>
+      {item.imageUrl.map((image, imageIndex) => (
+        <img
+          key={`${item._id}-image-${imageIndex}`} // Use _id for key
+          src={image.url}
+          alt={`Description of image ${imageIndex + 1}`}
+          style={{ width: '100px', height: 'auto', marginBottom: '8px' }}
+        />
+      ))}
+      <div>
+        <button onClick={() => handleChange(item, +1)}> + </button>
+        <button>{item.quantity}</button>
+        <button onClick={() => handleChange(item, -1)}> - </button>
+      </div>
+     
     </div>
-  );
-};
+  ))}
+   <p><strong>Total Amount:</strong> ${price}</p>
+
+   <button Onclick={handleSubmit(dish)}> Confirm order?</button>
+</div>
+  )}
 
 export default AddtoCart;
