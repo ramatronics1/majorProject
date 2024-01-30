@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require('mongoose');
 const { Auth } = require('../models/clientSchema');
 const { Dish } = require('../models/adminSchema');
-const {Order}=require('../models/clientSchema')
+const { Order } = require('../models/clientSchema');
+const { eachOrder } = require('../models/clientSchema');
 
-router.get('/', (req, res) => {
-  // Handle GET request
-});
+
 
 router.post('/clientLogin', async (req, res) => {
   console.log(req.body);
@@ -41,29 +41,39 @@ router.get('/fetchDishes', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 router.post('/createOrder', async (req, res) => {
-  const { userId, dishes, totalAmount } = req.body;
+  const { price } = req.body;
+
+  const data = req.body.items.map((f) => ({
+    dishId: new mongoose.Types.ObjectId(f.dishId),
+    quantity: f.quantity,
+    specialInstructions: f.specialInstructions,
+  }));
 
   try {
-    
     const newOrder = new Order({
-     
-      dishes: dishes.map(dish => ({
-        dishId: mongoose.Types.ObjectId(dish.dishId),
-        quantity: dish.quantity,
-        specialInstructions: dish.specialInstructions || '',
-      })),
-      totalAmount: totalAmount,
-      status: 'Pending', 
+      totalAmount: price,
     });
+    newOrder.eachOrder = data;
+    console.log(newOrder);
 
     const savedOrder = await newOrder.save();
-
-   
-    res.json(savedOrder);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+router.get('/displayOrders', async (req, res) => {
+  try {
+    const orders = await Order.find().populate('eachOrder.dishId');
+    console.log(orders[0].eachOrder[0].dishId.imageUrl);
+    res.json(orders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 module.exports = router;

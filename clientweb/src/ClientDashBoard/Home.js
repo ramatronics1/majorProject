@@ -10,7 +10,7 @@ const Home = ({ handleClick }) => {
     try {
       const response = await axios.get('http://192.168.1.39:5000/fetchDishes');
       if (response.data) {
-        console.log(response.data);
+
         setData(response.data);
       }
     } catch (error) {

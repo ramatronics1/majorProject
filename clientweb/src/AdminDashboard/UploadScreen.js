@@ -49,7 +49,7 @@ const UploadScreen = () => {
       <input style={styles.input} placeholder="Description" onChange={(e) => setDescription(e.target.value)} value={description} />
       <input style={styles.input} placeholder="Price" onChange={(e) => setPrice(e.target.value)} value={price} type="number" />
       <input style={styles.input} placeholder="Category" onChange={(e) => setCategory(e.target.value)} value={category} />
-      <input style={styles.input} type="file" accept="image/*" onChange={handleImageChange} />
+      <input style={styles.input} type="file" accept="image/*" multiple onChange={handleImageChange} />
       <input style={styles.input} placeholder="Ingredients" onChange={(e) => setIngredients(e.target.value)} value={ingredients} />
       <div style={styles.pickerContainer}>
         <span style={styles.pickerLabel}>Is Vegetarian:</span>

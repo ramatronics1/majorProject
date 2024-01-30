@@ -1,12 +1,8 @@
 const mongoose = require('mongoose');
+const Dish = require('./adminSchema');
 
 const orderSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
-  dishes: [
+  eachOrder: [
     {
       dishId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -20,7 +16,7 @@ const orderSchema = new mongoose.Schema({
       specialInstructions: {
         type: String,
       },
-    },
+    }
   ],
   totalAmount: {
     type: Number,
