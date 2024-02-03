@@ -19,13 +19,18 @@ const StudentLogin = ({login,setLogin}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const IP=process.env.IP
+    console.log(IP)
     try {
-      const response = await axios.post('http://192.168.1.39:5000/clientLogin', { usn, dob });
-      // Handle success, you can navigate to another page or update state as needed
+      
+      const response = await axios.post(`http://localhost:5000/clientLogin`, { usn, dob },{
+        withCredentials: true
+      });
+      
       if (response.data) {
-        // Use `history` instead of `history()`
-        setLogin(false);
+        
+        localStorage.setItem('isLoggedIn', true.toString());
+       
         history('/EntryPage', { state: { id: usn } });
       }
       console.log('Login successful', response.data);

@@ -9,15 +9,15 @@ import UploadScreen from './AdminDashboard/UploadScreen';
 import EditDishScreen from './AdminDashboard/EditDishScreen';
 import DisplayDishes from './AdminDashboard/DisplayDishes';
 import ViewDish from './ClientDashBoard/ViewDish';
-
+import LoginPage from './ClientDashBoard/LoginPage';
 import Navbar from './ClientDashBoard/Navbar';
 import EntryPage from './ClientDashBoard/EntryPage';
-
 function App() {
   const [dish, setDish] = useState([]);
   const [show, setShow] = useState(true);
   const [warn, setWarn] = useState(false);
-  const [login,setLogin]=useState(true)
+
+  
 
   const handleClick = (item) => {
     let isPresent = false;
@@ -56,13 +56,12 @@ function App() {
   return (
     <div className="App">
       
-      <Navbar size={dish.length} setShow={setShow} />
-     { login&&<StudentLogin login={login} setLogin={setLogin}/>}
-     
+     <Navbar size={dish.length} setShow={setShow} setDish={setDish}/>
+       
 
 
       <Routes>
-
+      <Route path="/" element={<LoginPage/>} />
         <Route path="/adminHome" element={<AdminHome />} />
        
         <Route path="/adminLogin" element={<AdminLogin />} />

@@ -8,7 +8,7 @@ const Home = ({ handleClick }) => {
 
   const fetchDishes = async () => {
     try {
-      const response = await axios.get('http://192.168.1.39:5000/fetchDishes');
+      const response = await axios.get('http://localhost:5000/fetchDishes');
       if (response.data) {
 
         setData(response.data);

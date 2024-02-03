@@ -2,6 +2,7 @@ import React from 'react'
 import AddtoCart from './addtoCart'
 import Home from './Home'
 const EntryPage = ({show,dish,setDish,handleClick,handleChange,warn}) => {
+ 
   return (
     <div>
         {

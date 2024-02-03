@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const Dish = require('./adminSchema');
 
 const orderSchema = new mongoose.Schema({
+
+  userId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Auth',
+  },
   eachOrder: [
     {
       dishId: {
