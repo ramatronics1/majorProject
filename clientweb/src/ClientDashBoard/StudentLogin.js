@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const StudentLogin = ({login,setLogin}) => {
+const StudentLogin = ({ login, setLogin ,setId}) => {
   const [usn, setUsn] = useState('');
   const [dob, setDob] = useState('');
   const history = useNavigate();
@@ -19,20 +19,21 @@ const StudentLogin = ({login,setLogin}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const IP=process.env.IP
-    console.log(IP)
+   
     try {
-      
-      const response = await axios.post(`http://localhost:5000/clientLogin`, { usn, dob },{
+      const response = await axios.post(`http://localhost:5000/clientLogin`, { usn, dob }, {
         withCredentials: true
       });
-      
+
       if (response.data) {
-        
         localStorage.setItem('isLoggedIn', true.toString());
-       
-        history('/EntryPage', { state: { id: usn } });
+        const name = response.data.name;
+        const id=response.data._id;
+        setId(id);
+        
+        history('/EntryPage', { state: { usn: usn, name: name ,id:id} });
       }
+
       console.log('Login successful', response.data);
     } catch (error) {
       console.error('Login error', error);

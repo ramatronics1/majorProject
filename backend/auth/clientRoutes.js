@@ -20,11 +20,11 @@ router.post('/clientLogin', async (req, res) => {
 
     if (found.dob === dob) {
       req.session.user_id=found._id;
-      console.log("Session ID:", req.sessionID);
+     
 
-      //req.session.save()
+      
    console.log(req.session)
-      res.json('exist');
+      res.json(found);
     } else {
       console.log('error');
     }
@@ -87,4 +87,14 @@ router.get('/displayOrders', async (req, res) => {
   }
 });
 
+
+router.post('/prevOrders/:id',async(req,res)=>{
+
+  const id=req.params.id;
+  const order = await Order.find({userId:id}).populate(
+    'eachOrder.dishId'
+  )
+  res.json(order)
+
+})
 module.exports = router;

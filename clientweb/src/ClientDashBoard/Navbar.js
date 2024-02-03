@@ -1,29 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
-const Navbar = ({ size, setShow,setDish}) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
- const history=useNavigate();
+const Navbar = ({ size, setShow, setDish,id,setIsLoggedIn,isLoggedIn }) => {
+  
+  const history = useNavigate();
+
   const checkLocalStorage = () => {
     const isLoggedInString = localStorage.getItem('isLoggedIn');
-    let isLoggedIn=false;
-    if(isLoggedInString=='true')
-    {
-        isLoggedIn=!isLoggedIn
+    let isLoggedIn = false;
+    if (isLoggedInString === 'true') {
+      isLoggedIn = !isLoggedIn;
     }
     setIsLoggedIn(isLoggedIn);
   };
 
   const handleLogout = () => {
-    
-    localStorage.setItem('isLoggedIn',false.toString());
-    
+    localStorage.setItem('isLoggedIn', false.toString());
     setIsLoggedIn(false);
-    setDish([])
-    
-    history('/')
+    setDish([]);
+    history('/');
   };
-
+const handlePrevOrders=()=>{
+history('/PreviousOrders')
+}
   useEffect(() => {
     checkLocalStorage();
   });
@@ -38,9 +37,10 @@ const Navbar = ({ size, setShow,setDish}) => {
           </span>
           <span>{size}</span>
         </div>
-
-        { isLoggedIn && <button onClick={handleLogout}>Logout</button>}
-      </div> 
+     
+        {isLoggedIn && <button onClick={handleLogout}>Logout</button>}
+        {isLoggedIn && <button onClick={()=>handlePrevOrders()}>Previous Orders</button>}
+      </div>
     </nav>
   );
 };

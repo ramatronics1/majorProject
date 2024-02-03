@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cards from './Cards';
 
-const Home = ({ handleClick }) => {
+const Home = ({ handleClick,name,id }) => {
   const [data, setData] = useState([]);
 
   const fetchDishes = async () => {
@@ -24,7 +24,9 @@ const Home = ({ handleClick }) => {
 
   return (
     <div>
+      <h1>hello {name}</h1>
       <h1>Welcome to the Home Page</h1>
+      
       <div>
         {data.map((dish) => (
           <Cards key={dish._id} dish={dish} handleClick={handleClick} />

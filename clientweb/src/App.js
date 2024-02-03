@@ -8,7 +8,7 @@ import AdminLogin from './AdminDashboard/LoginPage';
 import UploadScreen from './AdminDashboard/UploadScreen';
 import EditDishScreen from './AdminDashboard/EditDishScreen';
 import DisplayDishes from './AdminDashboard/DisplayDishes';
-import ViewDish from './ClientDashBoard/ViewDish';
+import PreviousOrders from './ClientDashBoard/PreviousOrders';
 import LoginPage from './ClientDashBoard/LoginPage';
 import Navbar from './ClientDashBoard/Navbar';
 import EntryPage from './ClientDashBoard/EntryPage';
@@ -16,7 +16,9 @@ function App() {
   const [dish, setDish] = useState([]);
   const [show, setShow] = useState(true);
   const [warn, setWarn] = useState(false);
-
+  const [id,setId]=useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+ 
   
 
   const handleClick = (item) => {
@@ -56,20 +58,20 @@ function App() {
   return (
     <div className="App">
       
-     <Navbar size={dish.length} setShow={setShow} setDish={setDish}/>
+     <Navbar size={dish.length} setShow={setShow} setDish={setDish} id={id} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn}/>
        
 
 
       <Routes>
-      <Route path="/" element={<LoginPage/>} />
+      <Route path="/" element={<LoginPage setId={setId} setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/adminHome" element={<AdminHome />} />
-       
+        <Route path="/PreviousOrders" element={<PreviousOrders id={id}/>}/>
         <Route path="/adminLogin" element={<AdminLogin />} />
        
         <Route path="/UploadScreen" element={<UploadScreen />} />
         <Route path="/EditDishScreen" element={<EditDishScreen />} />
         <Route path="/DisplayDishes" element={<DisplayDishes />} />
-        <Route path="/ViewDishes" element={<ViewDish />} />
+      
         <Route path="/EntryPage" element={<EntryPage dish={dish} warn={warn} setDish={setDish} handleChange={handleChange} show={show} handleClick={handleClick} />} />
 
       </Routes>
