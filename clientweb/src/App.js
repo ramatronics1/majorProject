@@ -63,7 +63,7 @@ function App() {
 
 
       <Routes>
-      <Route path="/" element={<LoginPage setId={setId} setIsLoggedIn={setIsLoggedIn} />} />
+      <Route path="/" element={<LoginPage setId={setId} setIsLoggedIn={setIsLoggedIn} setDish={setDish}/>} />
         <Route path="/adminHome" element={<AdminHome />} />
         <Route path="/PreviousOrders" element={<PreviousOrders id={id}/>}/>
         <Route path="/adminLogin" element={<AdminLogin />} />

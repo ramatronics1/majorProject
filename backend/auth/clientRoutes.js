@@ -5,9 +5,15 @@ const { Auth } = require('../models/clientSchema');
 const { Dish } = require('../models/adminSchema');
 const { Order } = require('../models/clientSchema');
 const { eachOrder } = require('../models/clientSchema');
+const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser')
+const maxAge=3*24*60*60
 
-
-
+const createToken=(id)=>{
+return jwt.sign({id},'clientLogin secret',{
+  expiresIn:maxAge
+})
+}
 
 router.post('/clientLogin', async (req, res) => {
   console.log(req.body);
@@ -17,22 +23,23 @@ router.post('/clientLogin', async (req, res) => {
   try {
     const found = await Auth.findOne({ usn: usn });
  
+    if (found && found.dob === dob) {
+      req.session.user_id = found._id;
+      const token = createToken(found._id);
+    
+      res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
 
-    if (found.dob === dob) {
-      req.session.user_id=found._id;
-     
-
-      
-   console.log(req.session)
       res.json(found);
     } else {
       console.log('error');
+      res.status(401).json({ error: 'Invalid credentials' }); 
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 
 router.post('/createOrder', async (req, res) => {
@@ -60,6 +67,7 @@ router.post('/createOrder', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 router.get('/fetchDishes', async (req, res) => {
   try {
     const found = await Dish.find();
