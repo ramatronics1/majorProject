@@ -12,7 +12,7 @@ const Cards = ({ dish, handleClick }) => {
         <p><strong>Is Vegetarian:</strong> {dish.isVegetarian ? 'Yes' : 'No'}</p>
         {dish.imageUrl.map((image, imageIndex) => (
           <img
-            key={`${dish._id}-image-${imageIndex}`} // Use _id for key
+            key={`${dish._id}-image-${imageIndex}`} 
             src={image.url}
             alt={`Description of image ${imageIndex + 1}`}
             style={{ width: '100px', height: 'auto', marginBottom: '8px' }}

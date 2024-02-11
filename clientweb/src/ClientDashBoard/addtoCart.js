@@ -30,7 +30,7 @@ const AddtoCart = ({ dish, setDish, handleChange }) => {
       const IP=process.env.IP
       const response = await axios.post(`http://localhost:5000/createOrder`, { items: newAttributes, price: price },
       { withCredentials: true });
-      console.log(response.data); // You might want to handle the response
+      console.log(response.data); 
     } catch (error) {
       console.error('Error creating order:', error.message);
     }

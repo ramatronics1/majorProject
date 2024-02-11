@@ -33,7 +33,7 @@ history('/PreviousOrders')
         <span onClick={() => setShow(true)}>My Shopping</span>
         <div onClick={() => setShow((prevShow) => !prevShow)}>
           <span>
-            <i className="fas fa-cart-plus">count of orders = </i>
+            <i >count of orders = </i>
           </span>
           <span>{size}</span>
         </div>
