@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import StudentLogin from './ClientDashBoard/StudentLogin';
+import ClusterMap from './ClientDashBoard/ClusterMap';
 
 import AdminHome from './AdminDashboard/adminHome';
 import AdminLogin from './AdminDashboard/LoginPage';
@@ -57,6 +58,7 @@ function App() {
   
   return (
     <div className="App">
+      <ClusterMap/>
       
      <Navbar size={dish.length} setShow={setShow} setDish={setDish} id={id} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn}/>
        
