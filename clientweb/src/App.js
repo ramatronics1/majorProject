@@ -13,12 +13,15 @@ import PreviousOrders from './ClientDashBoard/PreviousOrders';
 import LoginPage from './ClientDashBoard/LoginPage';
 import Navbar from './ClientDashBoard/Navbar';
 import EntryPage from './ClientDashBoard/EntryPage';
+import HotelRegister from './AdminDashboard/HotelRegister';
+import HotelDisplay from './AdminDashboard/HotelDisplay';
 function App() {
   const [dish, setDish] = useState([]);
   const [show, setShow] = useState(true);
   const [warn, setWarn] = useState(false);
   const [id,setId]=useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+ 
  
   
 
@@ -58,10 +61,10 @@ function App() {
   
   return (
     <div className="App">
-      <ClusterMap/>
+    
       
      <Navbar size={dish.length} setShow={setShow} setDish={setDish} id={id} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn}/>
-       
+       <HotelDisplay/>
 
 
       <Routes>
@@ -73,6 +76,7 @@ function App() {
         <Route path="/UploadScreen" element={<UploadScreen />} />
         <Route path="/EditDishScreen" element={<EditDishScreen />} />
         <Route path="/DisplayDishes" element={<DisplayDishes />} />
+       
       
         <Route path="/EntryPage" element={<EntryPage dish={dish} warn={warn} setDish={setDish} handleChange={handleChange} show={show} handleClick={handleClick} />} />
 

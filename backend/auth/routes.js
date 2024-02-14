@@ -3,7 +3,7 @@ const route = express.Router();
 const {cloudinary}=require('../cloudinary/index')
 const bcrypt = require('bcrypt');
 
-const { Review, Dish, Signup } = require('../models/adminSchema');
+const { Review, Dish, Signup,Hotel } = require('../models/adminSchema');
 
 const multer = require('multer');
 const { storage } = require('../cloudinary/index');
@@ -11,8 +11,7 @@ const upload = multer({ storage });
 
 route.post('/addNewDish', upload.array('image'),async (req, res) => {
 
-  console.log(req.body)
-  console.log(req.files)
+ 
  
   try {
     const { name, description, price, category, ingredients ,imageUrl,isVegetarian} = req.body;
@@ -39,6 +38,41 @@ route.post('/addNewDish', upload.array('image'),async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+route.post('/hotelRegister', upload.array('image'), async (req, res) => {
+  try {
+    const { name, description, phone, email, longitude, latitude } = req.body;
+    const imageFiles = req.files.map((f) => ({ url: f.path, filename: f.filename }));
+    const newHotel = new Hotel({
+      name: name,
+      description: description,
+      phone: phone,
+      email: email,
+      geometry: {
+        coordinates: [latitude, longitude]
+      },
+      imageUrl: imageFiles
+    });
+
+    await newHotel.save();
+
+    res.status(201).json({ message: 'Hotel registered successfully', hotel: newHotel });
+  } catch (error) {
+    console.error('Error registering hotel:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+route.get('/hotelsDisplay', async (req, res) => {
+  try {
+    const hotels = await Hotel.find();
+    res.json(hotels);
+  } catch (error) {
+    // Handle the error appropriately, such as logging it or sending an error response
+    console.error("Error fetching hotels:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 
  route.get('/displayDishes', async (req, res) => {
     try {
