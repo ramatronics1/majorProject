@@ -45,7 +45,45 @@ const dishSchema = new mongoose.Schema({
   },
   isVegetarian:{
     type:Boolean
-  }
+  },
+  Review:[{
+    type: mongoose.Schema.Types.ObjectId,
+      ref: 'Review',
+  }]
+
+});
+const hotelSchema = new mongoose.Schema({
+  name: {
+    type: String
+  },
+  description: { 
+    type: String
+  },
+  phone: {
+    type: Number
+  },
+  email: {
+    type: String
+  },
+  reviews: [{ 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Review',
+  }],
+  geometry: {
+    coordinates: {
+      type: [Number], 
+      required: true
+    }
+  },
+  user:
+  [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Signup'
+  }],
+  imageUrl: {
+    type: [imageSchema],
+  },
+  
 });
 
 const reviewSchema = new mongoose.Schema({
@@ -68,9 +106,11 @@ const reviewSchema = new mongoose.Schema({
 const Review = mongoose.model('Review', reviewSchema);
 const Dish = mongoose.model('Dish', dishSchema);
 const Signup = mongoose.model('Signup', signupSchema);
+const Hotel=mongoose.model('Hotel',hotelSchema)
 
 module.exports = {
   Review,
   Dish,
   Signup,
+  Hotel
 };
