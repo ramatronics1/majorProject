@@ -49,7 +49,12 @@ const dishSchema = new mongoose.Schema({
   Review:[{
     type: mongoose.Schema.Types.ObjectId,
       ref: 'Review',
-  }]
+  }],
+  Hotel_id:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Hotel',
+  }
+
 
 });
 const hotelSchema = new mongoose.Schema({

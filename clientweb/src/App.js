@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import StudentLogin from './ClientDashBoard/StudentLogin';
-import ClusterMap from './ClientDashBoard/ClusterMap';
 
+import EachHotel from './AdminDashboard/EachHotel';
 import AdminHome from './AdminDashboard/adminHome';
 import AdminLogin from './AdminDashboard/LoginPage';
 import UploadScreen from './AdminDashboard/UploadScreen';
@@ -13,7 +12,6 @@ import PreviousOrders from './ClientDashBoard/PreviousOrders';
 import LoginPage from './ClientDashBoard/LoginPage';
 import Navbar from './ClientDashBoard/Navbar';
 import EntryPage from './ClientDashBoard/EntryPage';
-import HotelRegister from './AdminDashboard/HotelRegister';
 import HotelDisplay from './AdminDashboard/HotelDisplay';
 function App() {
   const [dish, setDish] = useState([]);
@@ -72,7 +70,8 @@ function App() {
         <Route path="/adminHome" element={<AdminHome />} />
         <Route path="/PreviousOrders" element={<PreviousOrders id={id}/>}/>
         <Route path="/adminLogin" element={<AdminLogin />} />
-       
+        <Route path="/hotel/:id" element={<EachHotel />} />
+        
         <Route path="/UploadScreen" element={<UploadScreen />} />
         <Route path="/EditDishScreen" element={<EditDishScreen />} />
         <Route path="/DisplayDishes" element={<DisplayDishes />} />

@@ -97,8 +97,8 @@ route.post('/adminLogin', async (req, res) => {
 
             if (validPassword) {
                 console.log(validPassword)
-                console.log("logged in")
-                res.json('exist')
+               
+               
 
              
             } else {
@@ -115,7 +115,7 @@ route.post('/adminLogin', async (req, res) => {
 
 route.post('/adminSignup', async (req, res) => {
     const { email, password } = req.body;
-    console.log(req.body)
+   
 
     try {
         const saltRounds = 10;
@@ -127,6 +127,7 @@ route.post('/adminSignup', async (req, res) => {
         });
 
         const savedUser = await user.save();
+         
         
 
         res.status(201).json(savedUser);
@@ -150,12 +151,6 @@ route.put('/updateDishes/:id', upload.array('image'), async (req, res) => {
 console.log(req.body)
   try {
     const dish = await Dish.findById(id);
-  
-
-   
-
-
-
     const imageFiles = req.files.map((f) => ({ url: f.path, filename: f.filename }));
     dish.imageUrl.push(...imageFiles);
     dish.name = name;
@@ -198,5 +193,11 @@ route.post('/fetchDishes/:id',async(req,res)=>{
   const id=req.params;
   const dish=dish.findById(id);
   console.log(dish)
+})
+route.post('/hotel/:id',async(req,res)=>{
+  const id=req.params.id;
+  
+  const hotel=await Hotel.findById(id);
+  res.json(hotel)
 })
 module.exports = route;

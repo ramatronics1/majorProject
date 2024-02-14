@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
-const AdminLogin = () => {
+const AdminSignup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useNavigate();
+  const navigate = useNavigate(); // Rename history to navigate
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,16 +21,15 @@ const AdminLogin = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://192.168.1.43:5000/adminLogin', { email, password });
-   
+      const response = await axios.post('http://localhost:5000/adminSignup', { email, password });
+
       if (response.data) {
-       
-        history('/adminHome', { state: { id: email } });
+        // Use navigate to redirect to adminHome and pass state
+        navigate('/adminHome', { state: { id: email } });
       }
-      console.log('Login successful', response.data);
+      console.log('Signed up successfuly', response.data);
     } catch (error) {
-      // Handle error, you can display an error message or perform other actions
-      console.error('Login error', error);
+      console.error(' error', error);
     }
   };
 
@@ -50,10 +49,10 @@ const AdminLogin = () => {
           required
         />
 
-        <input type="submit" value="Login" />
+        <input type="submit" value="Signup" />
       </form>
     </div>
   );
 };
 
-export default AdminLogin;
+export default AdminSignup;
