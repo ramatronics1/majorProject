@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const AdminSignup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Rename history to navigate
+  const navigate = useNavigate();
+  const id =useParams().hotelId;
+  console.log(id)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,17 +21,17 @@ const AdminSignup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+ 
 
     try {
-      const response = await axios.post('http://localhost:5000/adminSignup', { email, password });
+      const response = await axios.post('http://localhost:5000/adminSignup', { email, password,id});
 
       if (response.data) {
-        // Use navigate to redirect to adminHome and pass state
-        navigate('/adminHome', { state: { id: email } });
+        navigate('/adminHome');
       }
-      console.log('Signed up successfuly', response.data);
+      console.log('Signed up successfully', response.data);
     } catch (error) {
-      console.error(' error', error);
+      console.error('Error:', error);
     }
   };
 

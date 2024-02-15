@@ -114,27 +114,35 @@ route.post('/adminLogin', async (req, res) => {
 });
 
 route.post('/adminSignup', async (req, res) => {
-    const { email, password } = req.body;
-   
+  try {
+    const { email, password, id } = req.body;
 
-    try {
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hotel = await Hotel.findById(id);
 
-        const user = new Signup({
-            email: email,
-            password: hashedPassword,
-        });
-
-        const savedUser = await user.save();
-         
-        
-
-        res.status(201).json(savedUser);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error signing up' + error });
+    if (!hotel) {
+      return res.status(404).json({ error: 'Hotel not found' });
     }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const user = new Signup({
+      email: email,
+      password: hashedPassword,
+    });
+
+ 
+    const savedUser = await user.save();
+
+
+    hotel.reviews.push(savedUser._id);
+    await hotel.save();
+
+    res.status(201).json(savedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error signing up' + error });
+  }
 });
 
 route.delete("/deleteDishes/:id",async(req,res)=>{

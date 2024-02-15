@@ -13,6 +13,7 @@ import LoginPage from './ClientDashBoard/LoginPage';
 import Navbar from './ClientDashBoard/Navbar';
 import EntryPage from './ClientDashBoard/EntryPage';
 import HotelDisplay from './AdminDashboard/HotelDisplay';
+import AdminSignup from './AdminDashboard/AdminSignup';
 function App() {
   const [dish, setDish] = useState([]);
   const [show, setShow] = useState(true);
@@ -75,7 +76,7 @@ function App() {
         <Route path="/UploadScreen" element={<UploadScreen />} />
         <Route path="/EditDishScreen" element={<EditDishScreen />} />
         <Route path="/DisplayDishes" element={<DisplayDishes />} />
-       
+        <Route path="/adminSignup/:hotelId" element={<AdminSignup />} />
       
         <Route path="/EntryPage" element={<EntryPage dish={dish} warn={warn} setDish={setDish} handleChange={handleChange} show={show} handleClick={handleClick} />} />
 

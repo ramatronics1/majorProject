@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
 const EachHotel = () => {
@@ -25,7 +25,13 @@ const EachHotel = () => {
       {data ? (
         <div>
           <p>Hotel ID: {data._id}</p>
-          
+          <p>want to sign up?</p>
+          {/* Pass the hotel ID as state */}
+          <button>
+            <Link to={{ pathname: `/adminSignup/${data._id}` }}>
+              Sign Up
+            </Link>
+          </button>
         </div>
       ) : (
         <p>Loading...</p>
