@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const history = useNavigate();
+  const id = useParams().hotelId;
+  console.log(id)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,7 +23,7 @@ const AdminLogin = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://192.168.1.43:5000/adminLogin', { email, password });
+      const response = await axios.post('http://localhost:5000/adminLogin', { email, password,id});
    
       if (response.data) {
        

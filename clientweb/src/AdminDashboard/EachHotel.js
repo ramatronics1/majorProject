@@ -31,7 +31,13 @@ const EachHotel = () => {
             <Link to={{ pathname: `/adminSignup/${data._id}` }}>
               Sign Up
             </Link>
+           
           </button>
+          <button>
+          <Link to={{ pathname: `/adminLogin/${data._id}` }}>
+              Login 
+            </Link>
+            </button>
         </div>
       ) : (
         <p>Loading...</p>

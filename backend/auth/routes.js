@@ -83,35 +83,43 @@ route.get('/hotelsDisplay', async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   });
-route.post('/adminLogin', async (req, res) => {
- 
+  route.post('/adminLogin', async (req, res) => {
+    const { email, password, id } = req.body;
 
-    const { email, password } = req.body;
-
-    const saltRounds = 10;
     try {
-        const user = await Signup.findOne({ email });
-      console.log(user)
-        if (user) {
-            const validPassword = await bcrypt.compare(password, user.password);
+        const hotel = await Hotel.findById(id); 
+        console.log(hotel)
+        
+        if (hotel) {
+            const user = await Signup.findOne({ email });
+            console.log(user)
+            if (user) {
+                const userId = user._id;
+                const isUserAssociatedWithHotel = hotel.user.includes(userId);
+                console.log(isUserAssociatedWithHotel)
 
-            if (validPassword) {
-                console.log(validPassword)
-               
-               
-
-             
+                if (isUserAssociatedWithHotel) {
+                  
+                    console.log('User is associated with the hotel');
+                    res.status(200).json({ success: true, message: 'Login successful' });
+                } else {
+                 
+                    res.status(401).json({ success: false, message: 'User is not associated with the hotel' });
+                }
             } else {
+                
                 res.status(401).json({ success: false, message: 'Invalid email or password' });
             }
         } else {
-            res.status(401).json({ success: false, message: 'Invalid email or password' });
+            
+            res.status(404).json({ success: false, message: 'Hotel not found' });
         }
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error logging in' + error });
+        console.error('Error logging in:', error);
+        res.status(500).json({ error: 'Error logging in: ' + error });
     }
 });
+
 
 route.post('/adminSignup', async (req, res) => {
   try {
@@ -135,7 +143,7 @@ route.post('/adminSignup', async (req, res) => {
     const savedUser = await user.save();
 
 
-    hotel.reviews.push(savedUser._id);
+    hotel.user.push(savedUser._id);
     await hotel.save();
 
     res.status(201).json(savedUser);
