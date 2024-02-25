@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './StudentLogin.css';
+import { FaUser } from 'react-icons/fa';
+import { BsCalendar2DateFill } from 'react-icons/bs';
 
-const StudentLogin = ({ login, setLogin ,setId}) => {
+const StudentLogin = ({ login, setLogin, setId }) => {
   const [usn, setUsn] = useState('');
   const [dob, setDob] = useState('');
   const history = useNavigate();
@@ -19,7 +22,7 @@ const StudentLogin = ({ login, setLogin ,setId}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
+
     try {
       const response = await axios.post(`http://localhost:5000/clientLogin`, { usn, dob }, {
         withCredentials: true
@@ -28,10 +31,10 @@ const StudentLogin = ({ login, setLogin ,setId}) => {
       if (response.data) {
         localStorage.setItem('isLoggedIn', true.toString());
         const name = response.data.name;
-        const id=response.data._id;
+        const id = response.data._id;
         setId(id);
-        
-        history('/EntryPage', { state: { usn: usn, name: name ,id:id} });
+
+        history('/EntryPage', { state: { usn: usn, name: name, id: id } });
       }
 
       console.log('Login successful', response.data);
@@ -41,15 +44,19 @@ const StudentLogin = ({ login, setLogin ,setId}) => {
   };
 
   return (
-    <div>
+    <div className='wrapper'>
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
-        <label>USN:</label>
-        <input type="text" name="usn" onChange={handleChange} value={usn} />
-
-        <label>Date of Birth:</label>
-        <input type="date" name="dob" onChange={handleChange} value={dob} />
-
+        <div className='input-box'>
+          <label>USN:</label>
+          <input type="text" name="usn" onChange={handleChange} value={usn} />
+          <FaUser className='icon' />
+        </div>
+        <div className='input-box'>
+          <label>Date of Birth:</label>
+          <input type="date" name="dob" onChange={handleChange} value={dob} />
+          <BsCalendar2DateFill className='icon' />
+        </div>
         <button type='submit'>Submit</button>
       </form>
     </div>
