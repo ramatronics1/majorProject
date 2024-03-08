@@ -64,8 +64,8 @@ function App() {
     
       
      <Navbar size={dish.length} setShow={setShow} setDish={setDish} id={id} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn}/>
-       {/* <HotelDisplay/>
-  <HotelRegister/> */}
+     
+  {/* <HotelRegister/> */}
 
       <Routes>
       <Route path="/" element={<LoginPage setId={setId} setIsLoggedIn={setIsLoggedIn} setDish={setDish}/>} />
@@ -78,7 +78,8 @@ function App() {
         <Route path="/EditDishScreen" element={<EditDishScreen />} />
         <Route path="/DisplayDishes" element={<DisplayDishes />} />
         <Route path="/adminSignup/:hotelId" element={<AdminSignup />} />
-        <Route path="/adminLogin/:hotelId" element={<AdminLogin />} />      
+        <Route path="/adminLogin/:hotelId" element={<AdminLogin />} /> 
+        <Route path="/HotelDisplay" element={<HotelDisplay />} />      
         <Route path="/EntryPage" element={<EntryPage dish={dish} warn={warn} setDish={setDish} handleChange={handleChange} show={show} handleClick={handleClick} />} />
 
       </Routes>

@@ -25,8 +25,21 @@ const EachHotel = () => {
       {data ? (
         <div>
           <p>Hotel ID: {data._id}</p>
+          <div>{data.name}</div>
+        <div>{data.description}</div>
+        <div>{data.phone}</div>
+        <div>{data.email}</div>
+        {data.imageUrl.map((image, imageIndex) => (
+          <img
+            key={`${data._id}-image-${imageIndex}`} 
+            src={image.url}
+            alt={`Description of image ${imageIndex + 1}`}
+            style={{ width: '100px', height: 'auto', marginBottom: '8px' }}
+          />
+        ))}
           <p>want to sign up?</p>
           {/* Pass the hotel ID as state */}
+
           <button>
             <Link to={{ pathname: `/adminSignup/${data._id}` }}>
               Sign Up

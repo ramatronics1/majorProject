@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import HotelCards from './hotelCards';
+import ClusterMap from '../ClientDashBoard/ClusterMap';
 
 const HotelDisplay = () => {
 const [data,setData]=useState([]);
@@ -24,7 +25,8 @@ const [data,setData]=useState([]);
 
   return (
     <div>
-        <h1>hi</h1>
+        {/* <h1></h1> */}
+        <ClusterMap/>
       {data.map((hotel,index)=>(
         
         <HotelCards key={index} hotel={hotel}/>
