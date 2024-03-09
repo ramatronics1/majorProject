@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import StudentLogin from './StudentLogin'
-import Navbar from './Navbar'
+import { Link } from 'react-router-dom';
 
 const LoginPage = ({setId,setIsLoggedIn,setDish}) => {
    
@@ -34,7 +34,9 @@ const LoginPage = ({setId,setIsLoggedIn,setDish}) => {
   return (
     <div>
       
-
+      <h1>Are u the owner if yes press</h1><span><button><Link to={{ pathname:'/HotelDisplay' }}>
+              Here
+            </Link></button></span>
       
          <StudentLogin setId={setId}/>
       

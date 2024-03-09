@@ -54,8 +54,15 @@ const EachHotel = () => {
                   Login
                 </Link>
               </button>
+              
             </div>
           )}
+          <button>
+            <Link to={{ pathname: `/EntryPage/${data._id}` }}>
+              Display dishes?
+            </Link>
+            
+          </button>
          
         </div>
       ) : (
