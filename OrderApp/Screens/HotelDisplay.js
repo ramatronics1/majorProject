@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
 import Constants from 'expo-constants'; // Import Constants
 
@@ -29,7 +29,8 @@ const HotelDisplay = () => {
   const renderHotelCard = ({ item }) => <HotelCard hotel={item} />;
 
   return (
-    <View>
+    <View style={styles.container}>
+      {/* <Text style={styles.heading}></Text> */}
       <FlatList
         data={hotels}
         keyExtractor={(item) => item._id.toString()}
@@ -38,5 +39,19 @@ const HotelDisplay = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#1b1b1b', // Background Color
+  },
+  // heading: {
+  //   fontSize: 24,
+  //   fontWeight: 'bold',
+  //   marginBottom: 16,
+  //   color: '#333', // Heading Color
+  // },
+});
 
 export default HotelDisplay;
