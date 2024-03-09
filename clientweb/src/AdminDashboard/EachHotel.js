@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import DisplayDishes from './DisplayDishes';
 
 const EachHotel = () => {
   const [data, setData] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const { id } = useParams();
+
+  const checkLocalStorage = () => {
+    const isLoggedInString = localStorage.getItem('isLoggedIn');
+    let isLoggedIn = false;
+    if (isLoggedInString === 'true') {
+      isLoggedIn = !isLoggedIn;
+    }
+    setIsLoggedIn(isLoggedIn);
+  };
 
   const fetchHotel = async () => {
     try {
@@ -16,8 +28,12 @@ const EachHotel = () => {
   };
 
   useEffect(() => {
+    checkLocalStorage();
+  }, []);
+
+  useEffect(() => {
     fetchHotel();
-  }, [id]); // Make sure to include id in the dependency array to re-fetch when id changes
+  }, [id]);
 
   return (
     <div>
@@ -25,19 +41,22 @@ const EachHotel = () => {
       {data ? (
         <div>
           <p>Hotel ID: {data._id}</p>
-          <p>want to sign up?</p>
-          {/* Pass the hotel ID as state */}
-          <button>
-            <Link to={{ pathname: `/adminSignup/${data._id}` }}>
-              Sign Up
-            </Link>
-           
-          </button>
-          <button>
-          <Link to={{ pathname: `/adminLogin/${data._id}` }}>
-              Login 
-            </Link>
-            </button>
+          {!isLoggedIn && (
+            <div>
+              <p>want to sign up?</p>
+              <button>
+                <Link to={{ pathname: `/adminSignup/${data._id}` }}>
+                  Sign Up
+                </Link>
+              </button>
+              <button>
+                <Link to={{ pathname: `/adminLogin/${data._id}` }}>
+                  Login
+                </Link>
+              </button>
+            </div>
+          )}
+         
         </div>
       ) : (
         <p>Loading...</p>

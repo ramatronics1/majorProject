@@ -31,7 +31,7 @@ const StudentLogin = ({ login, setLogin ,setId}) => {
         const id=response.data._id;
         setId(id);
         
-        history('/EntryPage', { state: { usn: usn, name: name ,id:id} });
+        history('/HotelDisplay', { state: { usn: usn, name: name ,id:id} });
       }
 
       console.log('Login successful', response.data);

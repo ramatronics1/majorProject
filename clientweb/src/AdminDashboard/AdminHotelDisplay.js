@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import HotelCards from './AdminhotelCards';
+import React from 'react'
+import axios from 'axios';
+import ClusterMap from '../ClientDashBoard/ClusterMap';
+import { useState,useEffect } from 'react';
+import AdminHotelCards from './AdminhotelCards';
 
-const HotelDisplay = () => {
-const [data,setData]=useState([]);
+const AdminHotelDisplay = () => {
+    const [data,setData]=useState([]);
     const fetchHotels=async ()=>{
 
         try {
@@ -11,6 +13,7 @@ const [data,setData]=useState([]);
             if (response.data) {
       
               setData(response.data);
+              console.log(response.data)
             }
           } catch (error) {
             console.error('Error fetching dishes', error);
@@ -24,10 +27,10 @@ const [data,setData]=useState([]);
 
   return (
     <div>
-        <h1>hi</h1>
+       <ClusterMap/>
       {data.map((hotel,index)=>(
         
-        <HotelCards key={index} hotel={hotel}/>
+        <AdminHotelCards key={index} hotel={hotel}/>
 
       )) } 
       
@@ -35,4 +38,4 @@ const [data,setData]=useState([]);
   )
 }
 
-export default HotelDisplay
+export default AdminHotelDisplay

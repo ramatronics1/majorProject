@@ -74,11 +74,17 @@ const hotelSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Review',
   }],
-  geometry: {
+  geometry:{
     coordinates: {
-      type: [Number], 
+      type: [Number], // Array of arrays of arrays of numbers
       required: true
-    }
+    },
+  type: {
+    type: String,
+    enum: ['Point'],
+    required: true
+  }
+  
   },
   user:
   [{

@@ -3,9 +3,9 @@ import AddtoCart from './addtoCart'
 import { useLocation } from 'react-router-dom';
 import Home from './Home'
 const EntryPage = ({show,dish,setDish,handleClick,handleChange,warn}) => {
-  const location = useLocation();
-  const { id, name } = location.state
-  console.log(name,id)
+  
+  
+ 
   return (
     <div>
      
@@ -14,7 +14,7 @@ const EntryPage = ({show,dish,setDish,handleClick,handleChange,warn}) => {
 }
          {
   show ? (
-    <Home handleClick={handleClick} name={name} />
+    <Home handleClick={handleClick}  />
   ) : (
     <AddtoCart dish={dish} setDish={setDish} handleChange={handleChange} />
   )

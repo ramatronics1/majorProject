@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate,useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useNavigate();
-  const id = useParams().hotelId;
-  console.log(id)
+  const navigate = useNavigate(); // Correct usage of useNavigate
+  const { hotelId } = useParams();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,15 +22,14 @@ const AdminLogin = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/adminLogin', { email, password,id});
-   
+      const response = await axios.post('http://localhost:5000/adminLogin', { email, password, id: hotelId });
+      console.log(response);
+
       if (response.data) {
-       
-        history('/adminHome', { state: { id: email } });
+        navigate(`/hotel/${hotelId}`, { state: { id: email } }); // Correct navigation
       }
       console.log('Login successful', response.data);
     } catch (error) {
-      // Handle error, you can display an error message or perform other actions
       console.error('Login error', error);
     }
   };

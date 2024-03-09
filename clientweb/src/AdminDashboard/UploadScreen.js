@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useParams,useNavigate } from 'react-router-dom';
 
 const UploadScreen = () => {
   const [name, setName] = useState('');
@@ -9,7 +10,8 @@ const UploadScreen = () => {
   const [ingredients, setIngredients] = useState('');
   const [isVegetarian, setIsVegetarian] = useState(false);
   const [image, setImage] = useState(null);
-
+  const {hotelId}=useParams();
+  const navigate=useNavigate();
   const handleUpload = async () => {
     try {
       if (!name || !description || !price || !category || !ingredients || !image) {
@@ -25,11 +27,15 @@ const UploadScreen = () => {
       formData.append('ingredients', ingredients);
       formData.append('isVegetarian', isVegetarian.toString());
       formData.append('image', image);
+     
 
-      const response = await axios.post('http://192.168.1.39:5000/addNewdiSH', formData);
+      const response = await axios.post(`http://localhost:5000/addNewdish/${hotelId}`, formData);
 
-      console.log(response.data);
-      // Handle success, for example, show a success message or navigate to another screen.
+        if(response.data.success){
+          navigate(`/DisplayDishes/${hotelId}`)
+  
+        }
+      
     } catch (error) {
       console.error(error);
       // Handle error, for example, show an error message.

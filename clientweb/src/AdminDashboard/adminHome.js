@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams ,Link} from 'react-router-dom';
 import axios from 'axios';
-import DisplayDishes from './DisplayDishes';
+
 const AdminHome = () => {
-  const location = useLocation();
   
+  const {hotelId}=useParams();
 
   
 
@@ -12,8 +12,18 @@ const AdminHome = () => {
   return (
     <div>
       <h1>Welcome to the Home Page</h1>
-      {/* <p>Login: {location.state.id}</p> */}
-      <DisplayDishes/>
+      <button>
+            <Link to={{ pathname: `/EntryPage/${hotelId}` }}>
+              Display dishes?
+            </Link>
+            
+          </button>
+          <button>
+          <Link to={{ pathname: `/hotel/${hotelId}/UploadScreen` }}>
+              Upload dishes?
+            </Link>
+            </button>
+      
     </div>
   );
 };

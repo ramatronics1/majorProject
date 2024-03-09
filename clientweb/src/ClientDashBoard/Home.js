@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+
 import axios from 'axios';
 import Cards from './Cards';
 
 const Home = ({ handleClick,name,id }) => {
   const [data, setData] = useState([]);
+  const {hotelId}=useParams();
 
   const fetchDishes = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/fetchDishes');
+      const response = await axios.get(`http://localhost:5000/displayDishes/${hotelId}`);
       if (response.data) {
 
         setData(response.data);
@@ -24,7 +27,7 @@ const Home = ({ handleClick,name,id }) => {
 
   return (
     <div>
-      <h1>hello {name}</h1>
+      <h1>hello </h1>
       <h1>Welcome to the Home Page</h1>
       
       <div>

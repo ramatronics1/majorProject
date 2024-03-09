@@ -1,12 +1,12 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-const HotelCards = ({hotel}) => {
+const AdminHotelCards = ({hotel}) => {
     const history=useNavigate();
 
     
 
    const handleOnclick=(hotel)=>{
-        history(`/hotel/${hotel._id}`)
+        history(`/Admin/hotel/${hotel._id}`)
     }
   return (
     <div>
@@ -31,4 +31,4 @@ const HotelCards = ({hotel}) => {
   )
 }
 
-export default HotelCards
+export default AdminHotelCards

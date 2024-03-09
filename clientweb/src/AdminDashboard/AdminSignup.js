@@ -27,7 +27,7 @@ const AdminSignup = () => {
       const response = await axios.post('http://localhost:5000/adminSignup', { email, password,id});
 
       if (response.data) {
-        navigate('/adminHome');
+        navigate(`/hotel/${id}/`);
       }
       console.log('Signed up successfully', response.data);
     } catch (error) {

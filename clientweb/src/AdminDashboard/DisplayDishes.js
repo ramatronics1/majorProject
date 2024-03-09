@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const DisplayDishes = () => {
   const [dishes, setDishes] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const history=useNavigate();
+  const {hotelId}=useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/displayDishes');
+        const response = await axios.get(`http://localhost:5000/displayDishes/${hotelId}`);
         setDishes(response.data);
         console.log(response.data);
       } catch (error) {
@@ -19,6 +21,18 @@ const DisplayDishes = () => {
 
     fetchData();
   }, []);
+  const checkLocalStorage = () => {
+    const isLoggedInString = localStorage.getItem('isLoggedIn');
+    let isLoggedIn = false;
+    if (isLoggedInString === 'true') {
+      isLoggedIn = !isLoggedIn;
+    }
+    setIsLoggedIn(isLoggedIn);
+  };
+  useEffect(() => {
+    checkLocalStorage();
+  }, []);
+
 
   const handleEdit = (dish) => {
     history('/EditDishScreen',{ state: { id: dish } })
@@ -70,14 +84,17 @@ const DisplayDishes = () => {
 
             <p style={styles.label}>Is Vegetarian:</p>
             <p style={styles.text}>{dish.isVegetarian ? 'Yes' : 'No'}</p>
+            {!isLoggedIn && (
+  <div>
+    <button onClick={() => handleEdit(dish)} style={styles.button}>
+      Edit
+    </button>
+    <button onClick={() => handleDelete(dish._id)} style={styles.button}>
+      Delete
+    </button>
+  </div>
+)}
 
-            <button onClick={() => handleEdit(dish)} style={styles.button}>
-              Edit
-            </button>
-
-            <button onClick={() => handleDelete(dish._id)} style={styles.button}>
-              Delete
-            </button>
           </div>
         ))
       ) : (
