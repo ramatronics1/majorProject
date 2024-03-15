@@ -28,7 +28,7 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "REACT_NATIVE_LOCAL_IP": "192.168.107.30"
+      "REACT_NATIVE_LOCAL_IP": "192.168.29.420"
     }
   }
 }

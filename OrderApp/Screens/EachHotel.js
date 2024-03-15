@@ -11,7 +11,7 @@ const EachHotel = () => {
 
   const fetchHotel = async () => {
     try {
-      const response = await axios.post(`http://localhost:5000/hotel/${id}`);
+      const response = await axios.post(`http://192.168.0.100:5000/hotel/${id}`);
       setData(response.data);
     } catch (error) {
       console.error('Error fetching hotel:', error);

@@ -13,7 +13,7 @@ const HotelDisplay = () => {
       // Use Constants.manifest to get the local server's IP dynamically
       const serverIP = Constants.manifest2.extra.REACT_NATIVE_LOCAL_IP ;
 
-      const response = await axios.get(`http://192.168.107.30:5000/hotelsDisplay`);
+      const response = await axios.get(`http://192.168.0.100:5000/hotelsDisplay`);
       if (response.data) {
         setHotels(response.data);
       }

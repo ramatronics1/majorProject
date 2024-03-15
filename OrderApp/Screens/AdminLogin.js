@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet,Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import axios from 'axios';
-
 
 const AdminLogin = ({ route, navigation }) => {
   const { hotel } = route.params;
@@ -11,7 +10,7 @@ const AdminLogin = ({ route, navigation }) => {
   const handleLogin = async () => {
     try {
       // Replace 'YOUR_SERVER_URL' with the actual URL of your server
-      const response = await axios.post('http://192.168.107.30:5000/adminLogin', {
+      const response = await axios.post('http://192.168.0.100:5000/adminLogin', {
         email,
         password,
         id: hotel._id,
@@ -19,9 +18,13 @@ const AdminLogin = ({ route, navigation }) => {
 
       if (response.data.success) {
         console.log('Login successful');
+        // Display hotel ID along with email and password
+        console.log('Hotel ID:', hotel._id);
+        console.log('Email:', email);
+        console.log('Password:', password);
         // Navigate to the next screen or perform further actions upon successful login
         // For example, you can navigate to a Dashboard screen:
-        // navigation.navigate('Dashboard');
+        navigation.navigate('OrderDisplay', { hotelId: hotel._id });
       } else {
         console.log('Login failed:', response.data.message);
         // Handle login failure, show an error message, etc.
@@ -34,8 +37,9 @@ const AdminLogin = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-     <Image source={require('../symbol.png')} style={styles.logoImage} />
+      <Image source={require('../symbol.png')} style={styles.logoImage} />
       <Text style={styles.logoText}>Admin Login</Text>
+      <Text style={styles.hotelIdText}>Hotel ID: {hotel._id}</Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -53,11 +57,10 @@ const AdminLogin = ({ route, navigation }) => {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        {/* {message !== '' && <Text style={styles.messageText}>{message}</Text>} */}
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -71,6 +74,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white', // Secondary Color
     marginBottom: 30,
+  },
+  hotelIdText:{
+   color:"white"
   },
   inputContainer: {
     width: '80%',

@@ -5,13 +5,14 @@ import Welcome from './Screens/Welcome.js';
 import HotelDisplay from './Screens/HotelDisplay.js';
 import AdminLogin from './Screens/AdminLogin.js';
 import Constants from 'expo-constants';
+import OrderDisplay from './Screens/OrderDisplay.js';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  useEffect(() => {
-    console.log('Constants.manifest:', Constants.manifest2);
-  }, []);
+  // useEffect(() => {
+  //   console.log('Constants.manifest:', Constants.manifest2);
+  // }, []);
 
   return (
     <NavigationContainer>
@@ -19,6 +20,7 @@ const App = () => {
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="HotelDisplay" component={HotelDisplay} />
         <Stack.Screen name="AdminLogin" component={AdminLogin} />
+        <Stack.Screen name="OrderDisplay" component={OrderDisplay}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
