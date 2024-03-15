@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Dish = require('./adminSchema');
-
+const Hotel=require('./adminSchema')
 const orderSchema = new mongoose.Schema({
 
   userId:{
@@ -21,6 +21,9 @@ const orderSchema = new mongoose.Schema({
       specialInstructions: {
         type: String,
       },
+      hotelId:{type: mongoose.Schema.Types.ObjectId,
+        ref: 'Hotel',
+        } 
     }
   ],
   totalAmount: {
@@ -32,6 +35,9 @@ const orderSchema = new mongoose.Schema({
     enum: ['Pending', 'In Progress', 'Completed'],
     default: 'Pending',
   },
+  hotelId:{type: mongoose.Schema.Types.ObjectId,
+    ref: 'Hotel',
+    } 
 });
 
 const authSchema = new mongoose.Schema({

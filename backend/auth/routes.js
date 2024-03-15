@@ -4,6 +4,7 @@ const {cloudinary}=require('../cloudinary/index')
 const bcrypt = require('bcrypt');
 
 const { Review, Dish, Signup,Hotel } = require('../models/adminSchema');
+const {Order}=require('../models/clientSchema')
 
 const multer = require('multer');
 const { storage } = require('../cloudinary/index');
@@ -207,11 +208,34 @@ console.log(req.body)
 
 });
 
-route.post('/fetchDishes/:id',async(req,res)=>{
-  const id=req.params;
-  const dish=dish.findById(id);
-  console.log(dish)
-})
+route.get('/fetchOrders/:hotelId', async (req, res) => {
+  const { hotelId } = req.params;
+  console.log(hotelId)
+
+  try {
+    // Find orders where eachOrder contains an element with the provided hotelId
+    const orders = await Order.find({ 'eachOrder.hotelId': hotelId });
+
+    // Populate the dishId field for each dish in each order
+    var pops=[];
+    for (const order of orders) {
+     for(const each of order.eachOrder){
+      const populatedOrder = await Order.populate(each, { path: 'dishId' });
+      pops.push(populatedOrder);
+     }
+    }
+    res.json(pops)
+//     var last=[]
+//     for(const dishID of pops.eachOrder){
+// last = await Order.populate(pops,{path:'eachOrder.dishID'})
+// //     }
+// console.log(orders)
+    
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 route.post('/hotel/:id',async(req,res)=>{
   const id=req.params.id;
   

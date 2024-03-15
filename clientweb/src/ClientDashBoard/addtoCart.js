@@ -19,8 +19,10 @@ const AddtoCart = ({ dish, setDish, handleChange }) => {
 
   const handleSubmit = async (dish, price) => {
     try {
+      console.log(dish[0].Hotel_id)
       const newAttributes = dish.map((item) => ({
         dishId: item._id,
+        Hotel_id:item.Hotel_id,
         quantity: item.quantity,
         specialInstructions: specialInstructions[item._id] || '',
       }));
