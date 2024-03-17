@@ -10,7 +10,7 @@ const AdminLogin = ({ route, navigation }) => {
   const handleLogin = async () => {
     try {
       // Replace 'YOUR_SERVER_URL' with the actual URL of your server
-      const response = await axios.post('http://192.168.0.100:5000/adminLogin', {
+      const response = await axios.post('http://192.168.29.42:5000/adminLogin', {
         email,
         password,
         id: hotel._id,
