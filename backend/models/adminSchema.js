@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const {Order}=require('./clientSchema')
 const imageSchema= new mongoose.Schema({
   url:  String,
   filename:String
@@ -114,14 +115,32 @@ const reviewSchema = new mongoose.Schema({
   },
 });
 
+const acceptedOrderSchema= new mongoose.Schema(
+  {
+    hotelId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Hotel',
+      required: true
+    },
+    orderId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Order',
+      required: true
+    }
+
+  }
+)
+
 const Review = mongoose.model('Review', reviewSchema);
 const Dish = mongoose.model('Dish', dishSchema);
 const Signup = mongoose.model('Signup', signupSchema);
 const Hotel=mongoose.model('Hotel',hotelSchema)
+const acceptedOrders=mongoose.model('AcceptedOrder',acceptedOrderSchema)
 
 module.exports = {
   Review,
   Dish,
   Signup,
-  Hotel
+  Hotel,
+  acceptedOrders
 };

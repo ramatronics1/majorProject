@@ -3,7 +3,7 @@ const route = express.Router();
 const {cloudinary}=require('../cloudinary/index')
 const bcrypt = require('bcrypt');
 
-const { Review, Dish, Signup,Hotel } = require('../models/adminSchema');
+const { Review, Dish, Signup,Hotel,acceptedOrders} = require('../models/adminSchema');
 const {Order}=require('../models/clientSchema')
 
 const multer = require('multer');
@@ -11,17 +11,18 @@ const { storage } = require('../cloudinary/index');
 const upload = multer({ storage });
 route.post('/addNewdish/:id', upload.array('image'), async (req, res) => {
   const id = req.params.id;
+  console.log(req.body)
 
   try {
     const { name, description, price, category, ingredients, isVegetarian } = req.body;
 
-    const imageFiles = req.files.map((f) => ({ url: f.path, filename: f.filename }));
+    // const imageFiles = req.files.map((f) => ({ url: f.path, filename: f.filename }));
     const newDish = new Dish({
       name: name,
       description: description,
       price: price,
       category: category,
-      imageUrl: imageFiles,
+      // imageUrl: imageFiles,
       quantity: 1,
       ingredients: ingredients,
       isVegetarian: isVegetarian,
@@ -214,25 +215,62 @@ route.get('/fetchOrders/:hotelId', async (req, res) => {
 
   try {
     // Find orders where eachOrder contains an element with the provided hotelId
-    const orders = await Order.find({ 'eachOrder.hotelId': hotelId });
+    const orders = await Order.find({ hotelId: hotelId });
+
+    const listofAcceptedOrders=await acceptedOrders.find({});
+    console.log(listofAcceptedOrders)
+    var nonAcceptedOrder=[];
+    for(const order of orders){
+     
+      if(!listofAcceptedOrders.includes(fuck=>fuck.orderId===order._id)){
+        nonAcceptedOrder.push(order);
+     }
+    }
+    console.log(nonAcceptedOrder)
+   
+    
+
+
 
     // Populate the dishId field for each dish in each order
     var pops=[];
-    for (const order of orders) {
+    for (const order of nonAcceptedOrder) {
      for(const each of order.eachOrder){
       const populatedOrder = await Order.populate(each, { path: 'dishId' });
       pops.push(populatedOrder);
      }
     }
-    res.json(pops)
-//     var last=[]
-//     for(const dishID of pops.eachOrder){
-// last = await Order.populate(pops,{path:'eachOrder.dishID'})
-// //     }
-// console.log(orders)
+    const responseData={
+      nonAcceptedOrder:nonAcceptedOrder,
+      pops:pops
+    }
+    res.json(responseData)
+    console.log(pops)
+
     
   } catch (error) {
     console.error('Error fetching orders:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+route.post('/acceptedOrders', async (req, res) => {
+  try {
+    const { hotelId, orderId } = req.body;
+    console.log(orderId)
+
+    // Create a new instance of AcceptedOrder model
+    const newAcceptedOrder = new acceptedOrders({
+      hotelId: hotelId,
+      orderId: orderId
+    });
+
+   
+    const savedOrder = await newAcceptedOrder.save();
+
+   
+    res.status(201).json(savedOrder);
+  } catch (error) {
+    console.error('Error saving accepted order:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });

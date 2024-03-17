@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useParams,useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const UploadScreen = () => {
   const [name, setName] = useState('');
@@ -10,15 +10,16 @@ const UploadScreen = () => {
   const [ingredients, setIngredients] = useState('');
   const [isVegetarian, setIsVegetarian] = useState(false);
   const [image, setImage] = useState(null);
-  const {hotelId}=useParams();
-  const navigate=useNavigate();
+  const { hotelId } = useParams();
+  const navigate = useNavigate();
+
   const handleUpload = async () => {
     try {
       if (!name || !description || !price || !category || !ingredients || !image) {
         alert('Error: Please fill in all the fields and provide an image.');
         return;
       }
-
+  
       const formData = new FormData();
       formData.append('name', name);
       formData.append('description', description);
@@ -27,25 +28,28 @@ const UploadScreen = () => {
       formData.append('ingredients', ingredients);
       formData.append('isVegetarian', isVegetarian.toString());
       formData.append('image', image);
-     
-
-      const response = await axios.post(`http://localhost:5000/addNewdish/${hotelId}`, formData);
-
-        if(response.data.success){
-          navigate(`/DisplayDishes/${hotelId}`)
   
+      const response = await axios.post(`http://localhost:5000/addNewdish/65f400c705cde929983e06b2`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      
+      });
+  
+      if (response.data.success) {
+        navigate(`/DisplayDishes/${hotelId}`);
+      }
     } catch (error) {
       console.error(error);
       // Handle error, for example, show an error message.
       alert('Error: Failed to upload dish. Please try again.');
     }
   };
+  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
+    console.log(image)
   };
 
   return (

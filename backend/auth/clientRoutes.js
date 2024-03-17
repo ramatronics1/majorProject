@@ -51,12 +51,15 @@ router.post('/createOrder', async (req, res) => {
     hotelId:new mongoose.Types.ObjectId(f.Hotel_id),
     specialInstructions: f.specialInstructions,
   }));
+ 
   const id= req.session.user_id;
 
   try {
     const newOrder = new Order({
       totalAmount: price,
-      userId: id
+      userId: id,
+      hotelId:req.body.items[0].Hotel_id
+      
      
     });
     newOrder.eachOrder = data;

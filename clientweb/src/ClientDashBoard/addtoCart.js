@@ -27,7 +27,7 @@ const AddtoCart = ({ dish, setDish, handleChange }) => {
         specialInstructions: specialInstructions[item._id] || '',
       }));
       newAttributes.totalAmount = price;
-      console.log(newAttributes);
+      console.log(newAttributes[0].Hotel_id);
     
       const IP=process.env.IP
       const response = await axios.post(`http://localhost:5000/createOrder`, { items: newAttributes, price: price },
