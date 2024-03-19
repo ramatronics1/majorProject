@@ -11,15 +11,15 @@ const Welcome = ({}) => {
       <View style={styles.buttonContainer}>
         <View style={styles.buttonWrapper}>
       <Button
-        title="Login"
-        onPress={() => navigation.navigate('Login')}
+        title="About"
+        onPress={() => navigation.navigate('About')}
         color="#ffa31a"
       />
         </View>
         <View style={styles.buttonWrapper}>
       <Button
-        title="Signup"
-        onPress={() => navigation.navigate('Signup')}
+        title="Explore"
+        onPress={() => navigation.navigate('HotelDisplay')}
         color="#ffa31a"
       />
       </View>

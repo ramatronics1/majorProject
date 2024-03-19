@@ -10,7 +10,7 @@ const DisplayDishes = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.1.42:5000/displayDishes');
+        const response = await axios.get('http:// 192.168.29.42:5000/displayDishes');
         setDishes(response.data);
         console.log(response.data);
       } catch (error) {

@@ -24,7 +24,7 @@ const Welcome = ({}) => {
       />
       </View>
     </View>
-    <Text style={styles.footerText}>© 2023 CampusEats. All rights reserved.</Text>
+    <Text style={styles.footerText}>© 2023 CampusEats. Alled.</Text>
     </View>
   );
 };

@@ -1,59 +1,32 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
-const OrderCard = ({ totalAmount, specialInstructions, onAccept, onReject }) => {
+const OrderCard = ({ dish }) => {
+  console.log(dish)
   return (
     <View style={styles.cardContainer}>
-      <View style={styles.card}>
-        <Text>Total Amount: {totalAmount}</Text>
-        <Text>Special Instructions: {specialInstructions}</Text>
-
-        {/* Accept and Reject buttons */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={onAccept}>
-            <Text style={styles.buttonText}>Accept</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.rejectButton]} onPress={onReject}>
-            <Text style={styles.buttonText}>Reject</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <Text style={styles.dishName}>Dish Name: {dish.dishId.name}</Text>
+      <Text style={styles.dishName}>Dish Name: {dish.dishId.category}</Text>
+      
+      <Text>Quantity: {dish.quantity}</Text>
+      <Text>Special Instructions: {dish.specialInstructions}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   cardContainer: {
-    marginVertical: 10,
-  },
-  card: {
-    padding: 20,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 10,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-  },
-  button: {
-    flex: 1,
+    backgroundColor: '#fff',
     padding: 10,
+    marginVertical: 5,
     borderRadius: 5,
-    alignItems: 'center',
+    borderColor: '#ccc',
+    borderWidth: 1,
   },
-  acceptButton: {
-    backgroundColor: '#4CAF50',
-    marginRight: 5,
-  },
-  rejectButton: {
-    backgroundColor: '#F44336',
-    marginLeft: 5,
-  },
-  buttonText: {
-    color: 'white',
+  dishName: {
     fontWeight: 'bold',
   },
 });
 
 export default OrderCard;
+

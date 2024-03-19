@@ -8,36 +8,34 @@ const { Review, Dish, Signup,Hotel } = require('../models/adminSchema');
 const multer = require('multer');
 const { storage } = require('../cloudinary/index');
 const upload = multer({ storage });
+route.post('/addNewdish/:id', upload.array('image'), async (req, res) => {
+  const id = req.params.id;
 
-route.post('/addNewDish', upload.array('image'),async (req, res) => {
-
- 
- 
   try {
-    const { name, description, price, category, ingredients ,imageUrl,isVegetarian} = req.body;
-    
-   const imageFiles = req.files.map((f) => ({ url: f.path, filename: f.filename }));
+    const { name, description, price, category, ingredients, isVegetarian } = req.body;
+
+    const imageFiles = req.files.map((f) => ({ url: f.path, filename: f.filename }));
     const newDish = new Dish({
       name: name,
       description: description,
       price: price,
       category: category,
       imageUrl: imageFiles,
-      quantity:1,
-      ingredients: ingredients, 
-      isVegetarian:isVegetarian
+      quantity: 1,
+      ingredients: ingredients,
+      isVegetarian: isVegetarian,
+      Hotel_id: id
     });
-
-    console.log(newDish);
 
     await newDish.save();
 
-    res.status(201).json({ message: 'Dish added successfully' });
+    res.status(201).json({ success: true, message: 'Dish added successfully' }); 
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ success: false, error: 'Internal Server Error' }); 
   }
 });
+
 route.post('/hotelRegister', upload.array('image'), async (req, res) => {
   try {
     const { name, description, phone, email, longitude, latitude } = req.body;
@@ -48,7 +46,8 @@ route.post('/hotelRegister', upload.array('image'), async (req, res) => {
       phone: phone,
       email: email,
       geometry: {
-        coordinates: [latitude, longitude]
+        type: 'Point', // Set the type
+        coordinates: [parseFloat(longitude), parseFloat(latitude)] // Parse latitude and longitude to float
       },
       imageUrl: imageFiles
     });
@@ -62,6 +61,7 @@ route.post('/hotelRegister', upload.array('image'), async (req, res) => {
   }
 });
 
+
 route.get('/hotelsDisplay', async (req, res) => {
   try {
     const hotels = await Hotel.find();
@@ -74,9 +74,10 @@ route.get('/hotelsDisplay', async (req, res) => {
 });
 
 
- route.get('/displayDishes', async (req, res) => {
+ route.get('/displayDishes/:id', async (req, res) => {
+  const {id} = req.params;
     try {
-      const dishes = await Dish.find();
+      const dishes = await Dish.find({Hotel_id:id});
       console.log(dishes)
       res.json(dishes);
     } catch (error) {
@@ -85,6 +86,7 @@ route.get('/hotelsDisplay', async (req, res) => {
   });
   route.post('/adminLogin', async (req, res) => {
     const { email, password, id } = req.body;
+    console.log(req.body)
 
     try {
         const hotel = await Hotel.findById(id); 

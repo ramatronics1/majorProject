@@ -6,6 +6,7 @@ import LoginPage from './Screens/Loginscreen.js';
 import SignupPage from './Screens/SignUp.js';
 import HomeScreen from './Screens/Home.js';
 import UploadScreen from './Screens/UploadScreen.js';
+import HotelDisplay from './Screens/HotelDisplay.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,8 @@ const App = () => {
         <Stack.Screen name="Signup" component={SignupPage} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} /> 
         <Stack.Screen name="UploadScreen" component={UploadScreen} />
+
+      <Stack.Screen name="HotelDisplay" component={HotelDisplay} />
       </Stack.Navigator>
     </NavigationContainer>
   );

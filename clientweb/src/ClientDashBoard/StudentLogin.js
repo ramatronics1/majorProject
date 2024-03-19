@@ -37,7 +37,7 @@ const StudentLogin = ({ login, setLogin ,setId}) => {
         
         history('/EntryPage', { state: { usn: usn, name: name ,id:id} });
       }
-
+      
       console.log('Login successful', response.data);
     } catch (error) {
       console.error('Login error', error);
