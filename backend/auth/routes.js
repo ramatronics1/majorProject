@@ -11,7 +11,7 @@ const { storage } = require('../cloudinary/index');
 const upload = multer({ storage });
 route.post('/addNewdish/:id', upload.array('image'), async (req, res) => {
   const id = req.params.id;
-  console.log(req.body)
+  
 
   try {
     const { name, description, price, category, ingredients, isVegetarian } = req.body;
@@ -80,7 +80,7 @@ route.get('/hotelsDisplay', async (req, res) => {
   const {id} = req.params;
     try {
       const dishes = await Dish.find({Hotel_id:id});
-      console.log(dishes)
+     
       res.json(dishes);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -88,19 +88,19 @@ route.get('/hotelsDisplay', async (req, res) => {
   });
   route.post('/adminLogin', async (req, res) => {
     const { email, password, id } = req.body;
-    console.log(req.body)
+   
 
     try {
         const hotel = await Hotel.findById(id); 
-        console.log(hotel)
+       
         
         if (hotel) {
             const user = await Signup.findOne({ email });
-            console.log(user)
+           
             if (user) {
                 const userId = user._id;
                 const isUserAssociatedWithHotel = hotel.user.includes(userId);
-                console.log(isUserAssociatedWithHotel)
+               
 
                 if (isUserAssociatedWithHotel) {
                   
@@ -211,22 +211,24 @@ console.log(req.body)
 
 route.get('/fetchOrders/:hotelId', async (req, res) => {
   const { hotelId } = req.params;
-  console.log(hotelId)
+
 
   try {
-    // Find orders where eachOrder contains an element with the provided hotelId
+   
     const orders = await Order.find({ hotelId: hotelId });
 
     const listofAcceptedOrders=await acceptedOrders.find({});
-    console.log(listofAcceptedOrders)
+    
     var nonAcceptedOrder=[];
     for(const order of orders){
-     
-      if(!listofAcceptedOrders.includes(fuck=>fuck.orderId===order._id)){
-        nonAcceptedOrder.push(order);
-     }
+
+     if (!listofAcceptedOrders.some(item => item.orderId.equals(order._id))) {
+      nonAcceptedOrder.push(order);
+  }
+  
+    
     }
-    console.log(nonAcceptedOrder)
+   console.log(nonAcceptedOrder)
    
     
 
@@ -245,7 +247,8 @@ route.get('/fetchOrders/:hotelId', async (req, res) => {
       pops:pops
     }
     res.json(responseData)
-    console.log(pops)
+   
+
 
     
   } catch (error) {
@@ -253,22 +256,22 @@ route.get('/fetchOrders/:hotelId', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-route.post('/acceptedOrders', async (req, res) => {
+route.post('/acceptedOrders/:id/:hotelId', async (req, res) => {
   try {
-    const { hotelId, orderId } = req.body;
-    console.log(orderId)
+    const  {id,hotelId} =req.params;
+   
 
-    // Create a new instance of AcceptedOrder model
+
     const newAcceptedOrder = new acceptedOrders({
       hotelId: hotelId,
-      orderId: orderId
+      orderId: id
     });
 
    
     const savedOrder = await newAcceptedOrder.save();
 
    
-    res.status(201).json(savedOrder);
+    res.status(201)
   } catch (error) {
     console.error('Error saving accepted order:', error);
     res.status(500).json({ error: 'Internal Server Error' });
