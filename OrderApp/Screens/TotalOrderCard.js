@@ -6,7 +6,7 @@ import OrderCard from './OrderCard';
 const TotalOrderCard = ({pops, order, onAccept, onReject,hotelId }) => {
  const handleAccept = async (orderId) => {
     try {
-      await axios.post(`http://192.168.29.42:5000/acceptedOrders/${orderId}/${hotelId}`);
+      await axios.post(`http://192.168.1.44:5000/acceptedOrders/${orderId}/${hotelId}`);
       fetchOrders();
       Alert.alert('Order Accepted', 'The order has been accepted successfully.');
     } catch (error) {

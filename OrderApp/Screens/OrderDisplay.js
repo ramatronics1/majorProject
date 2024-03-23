@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert, Button } from 'react-native';
 import axios from 'axios';
 import TotalOrderCard from './TotalOrderCard';
 
@@ -14,7 +14,7 @@ const OrderDisplay = ({ route }) => {
 
   const fetchOrders = async () => {
   try {
-    const response = await axios.get(`http://192.168.29.42:5000/fetchOrders/${hotelId}`);
+    const response = await axios.get(`http://192.168.1.44:5000/fetchOrders/${hotelId}`);
     if (response.data) {
       const { nonAcceptedOrder, pops } = response.data; // Corrected variable name
       setOrders(nonAcceptedOrder); // Set nonAcceptedOrder instead of nonAcceptedOrders
@@ -60,10 +60,14 @@ const OrderDisplay = ({ route }) => {
       onReject={() => handleReject(item._id)}
     />
   );
+  const refreshScreen = () => {
+    fetchOrders();
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Orders for Hotel {hotelId}</Text>
+      <Button title="Refresh" onPress={refreshScreen} />
       <FlatList
         data={orders}
         keyExtractor={(item) => item._id.toString()}
