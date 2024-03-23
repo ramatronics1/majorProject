@@ -2,6 +2,7 @@ const express = require('express');
 const route = express.Router();
 const {cloudinary}=require('../cloudinary/index')
 const bcrypt = require('bcrypt');
+const Razorpay=require('razorpay')
 
 const { Review, Dish, Signup,Hotel } = require('../models/adminSchema');
 
@@ -46,8 +47,8 @@ route.post('/hotelRegister', upload.array('image'), async (req, res) => {
       phone: phone,
       email: email,
       geometry: {
-        type: 'Point', // Set the type
-        coordinates: [parseFloat(longitude), parseFloat(latitude)] // Parse latitude and longitude to float
+        type: 'Point',
+        coordinates: [parseFloat(longitude), parseFloat(latitude)] 
       },
       imageUrl: imageFiles
     });
@@ -67,7 +68,6 @@ route.get('/hotelsDisplay', async (req, res) => {
     const hotels = await Hotel.find();
     res.json(hotels);
   } catch (error) {
-    // Handle the error appropriately, such as logging it or sending an error response
     console.error("Error fetching hotels:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -86,11 +86,11 @@ route.get('/hotelsDisplay', async (req, res) => {
   });
   route.post('/adminLogin', async (req, res) => {
     const { email, password, id } = req.body;
-    console.log(req.body)
+   
 
     try {
         const hotel = await Hotel.findById(id); 
-        console.log(hotel)
+       
         
         if (hotel) {
             const user = await Signup.findOne({ email });
@@ -98,7 +98,7 @@ route.get('/hotelsDisplay', async (req, res) => {
             if (user) {
                 const userId = user._id;
                 const isUserAssociatedWithHotel = hotel.user.includes(userId);
-                console.log(isUserAssociatedWithHotel)
+              
 
                 if (isUserAssociatedWithHotel) {
                   
@@ -217,5 +217,25 @@ route.post('/hotel/:id',async(req,res)=>{
   
   const hotel=await Hotel.findById(id);
   res.json(hotel)
+})
+
+route.post('/order',async (req,res)=>{
+  const instance=new Razorpay(
+   { key_id:process.env.key_id,
+     key_secret:process.env.key_secret
+  })
+  const {amount}=req.body;
+  const order = await instance.orders.create({
+    amount:amount*100,
+    currency:"INR",
+    receipt:"receipt#1"
+    
+  })
+  if(!order){
+    return res.status(500).send("Error")
+  }
+  res.json(order)
+
+  
 })
 module.exports = route;

@@ -29,7 +29,7 @@ const sessionConfig = {
     maxAge: 1000 * 60 * 60 * 24
   }
 };
-
+console.log(process.env.key_id)
 app.use(session(sessionConfig));
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -53,5 +53,6 @@ const PORT = process.env.PORT || 5000;
 const HOST = 'localhost'
 
 app.listen(PORT, HOST, () => {
+
   console.log(`Server running on http://${HOST}:${PORT}`);
 });

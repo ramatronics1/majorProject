@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+
 const AddtoCart = ({ dish, setDish, handleChange }) => {
   const [price, setPrice] = useState(0);
   const [specialInstructions, setSpecialInstructions] = useState({});
-
+  const amount = 500;
+  const currency = "INR";
+  const receiptId = "qwsaq1";
+  const data = {
+    amount: amount,
+    currency: currency,
+    receiptId: receiptId
+  };
   const handlePrice = () => {
     let ans = 0;
     dish.forEach((item) => {
@@ -25,9 +33,8 @@ const AddtoCart = ({ dish, setDish, handleChange }) => {
         specialInstructions: specialInstructions[item._id] || '',
       }));
       newAttributes.totalAmount = price;
-      console.log(newAttributes);
-    
-      const IP=process.env.IP
+   
+      
       const response = await axios.post(`http://localhost:5000/createOrder`, { items: newAttributes, price: price },
       { withCredentials: true });
       console.log(response.data); 
@@ -52,7 +59,7 @@ const AddtoCart = ({ dish, setDish, handleChange }) => {
           <p><strong>Is Vegetarian:</strong> {item.isVegetarian ? 'Yes' : 'No'}</p>
           {item.imageUrl.map((image, imageIndex) => (
             <img
-              key={`${item._id}-image-${imageIndex}`} // Use _id for key
+              key={`${item._id}-image-${imageIndex}`} 
               src={image.url}
               alt={`Description of image ${imageIndex + 1}`}
               style={{ width: '100px', height: 'auto', marginBottom: '8px' }}

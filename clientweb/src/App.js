@@ -12,7 +12,7 @@ import PreviousOrders from './ClientDashBoard/PreviousOrders';
 import LoginPage from './ClientDashBoard/LoginPage';
 import Navbar from './ClientDashBoard/Navbar';
 import EntryPage from './ClientDashBoard/EntryPage';
-
+import Product from './ClientDashBoard/pay';
 import AdminSignup from './AdminDashboard/AdminSignup';
 import HotelRegister from './AdminDashboard/HotelRegister';
 
@@ -65,7 +65,7 @@ function App() {
   return (
     <div className="App">
     
-      
+      <Product/>
      <Navbar size={dish.length} setShow={setShow} setDish={setDish} id={id} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn}/>
       
       
