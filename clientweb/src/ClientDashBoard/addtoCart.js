@@ -27,14 +27,17 @@ const AddtoCart = ({ dish, setDish, handleChange }) => {
 
   const handleSubmit = async (dish, price) => {
     try {
+      console.log(dish[0].Hotel_id)
       const newAttributes = dish.map((item) => ({
         dishId: item._id,
+        Hotel_id:item.Hotel_id,
         quantity: item.quantity,
         specialInstructions: specialInstructions[item._id] || '',
       }));
       newAttributes.totalAmount = price;
-   
-      
+      console.log(newAttributes[0].Hotel_id);
+    
+      const IP=process.env.IP
       const response = await axios.post(`http://localhost:5000/createOrder`, { items: newAttributes, price: price },
       { withCredentials: true });
       console.log(response.data); 

@@ -44,23 +44,27 @@ router.post('/clientLogin', async (req, res) => {
 
 router.post('/createOrder', async (req, res) => {
   const { price } = req.body;
-  console.log(req.session)
+  console.log(req.body)
   const data = req.body.items.map((f) => ({
     dishId: new mongoose.Types.ObjectId(f.dishId),
     quantity: f.quantity,
+    hotelId:new mongoose.Types.ObjectId(f.Hotel_id),
     specialInstructions: f.specialInstructions,
   }));
+ 
   const id= req.session.user_id;
 
   try {
     const newOrder = new Order({
       totalAmount: price,
-      userId: id
+      userId: id,
+      hotelId:req.body.items[0].Hotel_id
+      
      
     });
     newOrder.eachOrder = data;
    
-
+    console.log(newOrder)
     const savedOrder = await newOrder.save();
   } catch (error) {
     console.error(error);
