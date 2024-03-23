@@ -9,6 +9,15 @@ const {Order}=require('../models/clientSchema')
 const multer = require('multer');
 const { storage } = require('../cloudinary/index');
 const upload = multer({ storage });
+const nodemailer=require('nodemailer')
+
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'campuseatsnie@gmail.com', // Your Gmail address
+    pass: 'vjahgulfjooofeoc' // Your Gmail password
+  }
+});
 route.post('/addNewdish/:id', upload.array('image'), async (req, res) => {
   const id = req.params.id;
   
@@ -228,7 +237,7 @@ route.get('/fetchOrders/:hotelId', async (req, res) => {
   
     
     }
-   console.log(nonAcceptedOrder)
+ 
    
     
 
@@ -260,13 +269,28 @@ route.post('/acceptedOrders/:id/:hotelId', async (req, res) => {
   try {
     const  {id,hotelId} =req.params;
    
-
-
     const newAcceptedOrder = new acceptedOrders({
       hotelId: hotelId,
       orderId: id
     });
+    const orderWithUser = await Order.findById(id).populate('userId');
 
+    const email=orderWithUser.userId.email
+    const mailOptions = {
+      from: 'campuseatsnie@gmail.com',
+      to: email,
+      subject: 'Order Confirmation',
+      text: `Your order with the order id ${id} is ready and can be collected in the canteen.`
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ error: 'Failed to send email' });
+      } else {
+        console.log('Email sent:', info.response);
+        res.json({ message: 'Email sent successfully' });
+      }
+    });
    
     const savedOrder = await newAcceptedOrder.save();
 
