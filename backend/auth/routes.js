@@ -10,6 +10,15 @@ const {Order}=require('../models/clientSchema')
 const multer = require('multer');
 const { storage } = require('../cloudinary/index');
 const upload = multer({ storage });
+const nodemailer=require('nodemailer')
+
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'campuseatsnie@gmail.com', // Your Gmail address
+    pass: 'vjahgulfjooofeoc' // Your Gmail password
+  }
+});
 route.post('/addNewdish/:id', upload.array('image'), async (req, res) => {
   const id = req.params.id;
   console.log(id)
@@ -81,6 +90,7 @@ route.get('/hotelsDisplay', async (req, res) => {
     try {
       const dishes = await Dish.find({Hotel_id:id});
      
+     
       res.json(dishes);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -89,14 +99,16 @@ route.get('/hotelsDisplay', async (req, res) => {
   route.post('/adminLogin', async (req, res) => {
     const { email, password, id } = req.body;
    
+   
 
     try {
         const hotel = await Hotel.findById(id); 
        
+       
         
         if (hotel) {
             const user = await Signup.findOne({ email });
-            console.log(user)
+           
             if (user) {
                 const userId = user._id;
                 const isUserAssociatedWithHotel = hotel.user.includes(userId);
@@ -212,19 +224,21 @@ route.get('/fetchOrders/:hotelId', async (req, res) => {
   const { hotelId } = req.params;
   
   try {
-    // Find orders where eachOrder contains an element with the provided hotelId
+   
     const orders = await Order.find({ hotelId: hotelId });
 
     const listofAcceptedOrders=await acceptedOrders.find({});
-    console.log(listofAcceptedOrders)
+    
     var nonAcceptedOrder=[];
     for(const order of orders){
-     
-      if(!listofAcceptedOrders.includes(fuck=>fuck.orderId===order._id)){
-        nonAcceptedOrder.push(order);
-     }
+
+     if (!listofAcceptedOrders.some(item => item.orderId.equals(order._id))) {
+      nonAcceptedOrder.push(order);
+  }
+  
+    
     }
-    console.log(nonAcceptedOrder)
+ 
    
     
 
@@ -243,7 +257,8 @@ route.get('/fetchOrders/:hotelId', async (req, res) => {
       pops:pops
     }
     res.json(responseData)
-    console.log(pops)
+   
+
 
     
   } catch (error) {
@@ -251,22 +266,37 @@ route.get('/fetchOrders/:hotelId', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-route.post('/acceptedOrders', async (req, res) => {
+route.post('/acceptedOrders/:id/:hotelId', async (req, res) => {
   try {
-    const { hotelId, orderId } = req.body;
-    console.log(orderId)
-
-    // Create a new instance of AcceptedOrder model
+    const  {id,hotelId} =req.params;
+   
     const newAcceptedOrder = new acceptedOrders({
       hotelId: hotelId,
-      orderId: orderId
+      orderId: id
     });
+    const orderWithUser = await Order.findById(id).populate('userId');
 
+    const email=orderWithUser.userId.email
+    const mailOptions = {
+      from: 'campuseatsnie@gmail.com',
+      to: email,
+      subject: 'Order Confirmation',
+      text: `Your order with the order id ${id} is ready and can be collected in the canteen.`
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ error: 'Failed to send email' });
+      } else {
+        console.log('Email sent:', info.response);
+        res.json({ message: 'Email sent successfully' });
+      }
+    });
    
     const savedOrder = await newAcceptedOrder.save();
 
    
-    res.status(201).json(savedOrder);
+    res.status(201)
   } catch (error) {
     console.error('Error saving accepted order:', error);
     res.status(500).json({ error: 'Internal Server Error' });

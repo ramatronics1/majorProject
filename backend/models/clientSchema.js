@@ -51,7 +51,7 @@ const authSchema = new mongoose.Schema({
     type: String,
   },
   email:{
-    type:String,
+    type:String
   }
 });
 
