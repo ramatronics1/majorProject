@@ -12,11 +12,12 @@ import PreviousOrders from './ClientDashBoard/PreviousOrders';
 import LoginPage from './ClientDashBoard/LoginPage';
 import Navbar from './ClientDashBoard/Navbar';
 import EntryPage from './ClientDashBoard/EntryPage';
-import Product from './ClientDashBoard/pay';
+
 import AdminSignup from './AdminDashboard/AdminSignup';
 import HotelRegister from './AdminDashboard/HotelRegister';
 
 import AdminHotelDisplay from './AdminDashboard/AdminHotelDisplay';
+import OrderSuccess from './ClientDashBoard/OrderSuccess';
 
 function App() {
   const [dish, setDish] = useState([]);
@@ -35,15 +36,26 @@ function App() {
         isPresent = true;
       }
     });
+  
     if (isPresent) {
       setWarn(true);
       setTimeout(() => {
         setWarn(false);
       }, 2000);
-    }else{
-      setDish([...dish, item]);
+    } else {
+      let isDifferentHotel = true;
+      dish.forEach((product) => {
+        if (item.Hotel_id === product.Hotel_id) {
+          isDifferentHotel = false;
+        }
+      });
+  
+      if (isDifferentHotel) {
+        setDish([item]);
+      } else {
+        setDish([...dish, item]);
+      }
     }
-
   };
   
   const handleChange = (item, d) => {
@@ -65,7 +77,7 @@ function App() {
   return (
     <div className="App">
     
-      <Product/>
+     
      <Navbar size={dish.length} setShow={setShow} setDish={setDish} id={id} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn}/>
       
       
@@ -79,6 +91,7 @@ function App() {
         <Route path="/Admin/hotel/:id" element={<EachHotel />} />
      
         <Route path="/HotelDisplay" element={<AdminHotelDisplay />} />
+        <Route path="/orderSuccess/:orderId" element={<OrderSuccess />} />
        
         <Route path="/Admin/HotelRegister" element={<HotelRegister />} />
         

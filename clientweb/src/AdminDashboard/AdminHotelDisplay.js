@@ -13,7 +13,7 @@ const AdminHotelDisplay = () => {
             if (response.data) {
       
               setData(response.data);
-              console.log(response.data)
+             
             }
           } catch (error) {
             console.error('Error fetching dishes', error);

@@ -29,7 +29,7 @@ const UploadScreen = () => {
       formData.append('isVegetarian', isVegetarian.toString());
       formData.append('image', image);
   
-      const response = await axios.post(`http://localhost:5000/addNewdish/65f400c705cde929983e06b2`, formData, {
+      const response = await axios.post(`http://localhost:5000/addNewdish/${hotelId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

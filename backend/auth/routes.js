@@ -12,18 +12,18 @@ const { storage } = require('../cloudinary/index');
 const upload = multer({ storage });
 route.post('/addNewdish/:id', upload.array('image'), async (req, res) => {
   const id = req.params.id;
-  console.log(req.body)
+  console.log(id)
 
   try {
     const { name, description, price, category, ingredients, isVegetarian } = req.body;
 
-    // const imageFiles = req.files.map((f) => ({ url: f.path, filename: f.filename }));
+    const imageFiles = req.files.map((f) => ({ url: f.path, filename: f.filename }));
     const newDish = new Dish({
       name: name,
       description: description,
       price: price,
       category: category,
-      // imageUrl: imageFiles,
+      imageUrl: imageFiles,
       quantity: 1,
       ingredients: ingredients,
       isVegetarian: isVegetarian,
@@ -80,7 +80,7 @@ route.get('/hotelsDisplay', async (req, res) => {
   const {id} = req.params;
     try {
       const dishes = await Dish.find({Hotel_id:id});
-      console.log(dishes)
+     
       res.json(dishes);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -161,8 +161,7 @@ route.delete("/deleteDishes/:id",async(req,res)=>{
   const {id} = req.params; 
 
   await Dish.findByIdAndDelete(id);
-  res.redirect('/displayDishes')
-
+ 
 })
 
 route.put('/updateDishes/:id', upload.array('image'), async (req, res) => {
@@ -211,8 +210,7 @@ console.log(req.body)
 
 route.get('/fetchOrders/:hotelId', async (req, res) => {
   const { hotelId } = req.params;
-  console.log(hotelId)
-
+  
   try {
     // Find orders where eachOrder contains an element with the provided hotelId
     const orders = await Order.find({ hotelId: hotelId });
@@ -281,23 +279,5 @@ route.post('/hotel/:id',async(req,res)=>{
   res.json(hotel)
 })
 
-route.post('/order',async (req,res)=>{
-  const instance=new Razorpay(
-   { key_id:process.env.key_id,
-     key_secret:process.env.key_secret
-  })
-  const {amount}=req.body;
-  const order = await instance.orders.create({
-    amount:amount*100,
-    currency:"INR",
-    receipt:"receipt#1"
-    
-  })
-  if(!order){
-    return res.status(500).send("Error")
-  }
-  res.json(order)
 
-  
-})
 module.exports = route;

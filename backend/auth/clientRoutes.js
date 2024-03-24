@@ -64,8 +64,10 @@ router.post('/createOrder', async (req, res) => {
     });
     newOrder.eachOrder = data;
    
-    console.log(newOrder)
+    
     const savedOrder = await newOrder.save();
+    console.log(savedOrder)
+    res.json(savedOrder)
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });

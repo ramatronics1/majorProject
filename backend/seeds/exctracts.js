@@ -1,6 +1,10 @@
 const xlsx = require('xlsx');
 const mongoose = require('mongoose');
 const {Auth} = require('../models/clientSchema');
+const path = require('path');
+
+const filePath = path.join(__dirname, '..', 'seeds', 'Registrations.xlsx');
+
 
 mongoose.connect('mongodb://localhost:27017/majorproject', {
     useNewUrlParser: true,
@@ -24,7 +28,7 @@ const reverseDateFormat = dateString => {
 };
 
 const seedDB = async () => {
-  const workbook = xlsx.readFile("C:/Users/asus/Downloads//3 SEMESTER-StudentRegistration.xlsx");
+  const workbook = xlsx.readFile(filePath);
   const sheetName = 'ug 3rd sem';
 
   if (!workbook.Sheets.hasOwnProperty(sheetName)) {
@@ -40,6 +44,7 @@ const seedDB = async () => {
     column1: row[0], // Assuming the first column
     column2: row[3], // Assuming the second column
     column3: reverseDateFormat(row[6]),
+    column4:row[8]
   }));
 
 
@@ -51,6 +56,7 @@ const seedDB = async () => {
       usn: item.column1,
       name: item.column2,
       dob: item.column3,
+      email:item.column4
     });
     await seeds.save()
   }

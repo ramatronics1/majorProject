@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
 const AddtoCart = ({ dish, setDish, handleChange }) => {
   const [price, setPrice] = useState(0);
   const [specialInstructions, setSpecialInstructions] = useState({});
-  const amount = 500;
-  const currency = "INR";
-  const receiptId = "qwsaq1";
-  const data = {
-    amount: amount,
-    currency: currency,
-    receiptId: receiptId
-  };
+ const navigate=useNavigate();
   const handlePrice = () => {
     let ans = 0;
     dish.forEach((item) => {
@@ -20,14 +14,14 @@ const AddtoCart = ({ dish, setDish, handleChange }) => {
     });
     setPrice(ans);
   };
-
+ 
   const handleSpecialInstructionsChange = (id, instructions) => {
     setSpecialInstructions(prev => ({ ...prev, [id]: instructions }));
   };
 
   const handleSubmit = async (dish, price) => {
     try {
-      console.log(dish[0].Hotel_id)
+      
       const newAttributes = dish.map((item) => ({
         dishId: item._id,
         Hotel_id:item.Hotel_id,
@@ -35,12 +29,15 @@ const AddtoCart = ({ dish, setDish, handleChange }) => {
         specialInstructions: specialInstructions[item._id] || '',
       }));
       newAttributes.totalAmount = price;
-      console.log(newAttributes[0].Hotel_id);
-    
-      const IP=process.env.IP
+     
+   
       const response = await axios.post(`http://localhost:5000/createOrder`, { items: newAttributes, price: price },
       { withCredentials: true });
-      console.log(response.data); 
+      if(response){
+        navigate(`/orderSuccess/${response.data._id}` )
+        setDish([])
+      }
+     
     } catch (error) {
       console.error('Error creating order:', error.message);
     }
