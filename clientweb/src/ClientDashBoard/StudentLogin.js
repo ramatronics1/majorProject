@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import styles from './StudentLogin.module.css';
 
@@ -37,7 +37,7 @@ const StudentLogin = ({ login, setLogin ,setId}) => {
         
         history('/EntryPage', { state: { usn: usn, name: name ,id:id} });
       }
-      
+
       console.log('Login successful', response.data);
     } catch (error) {
       console.error('Login error', error);
@@ -50,6 +50,11 @@ const StudentLogin = ({ login, setLogin ,setId}) => {
         <img src={logo} alt='logo' className={styles.logo}/>
       </div>
       <div class={styles.rightDiv}>
+      <h4>Are u the owner if yes press &nbsp;
+      <span>
+          <Link className={styles.btnAdmin} to={{ pathname: "/HotelDisplay" }}>Here</Link>
+      </span>
+      </h4>
         <h1>LOGIN</h1>
         <form className={styles.form} onSubmit={handleSubmit}>
           <label>USN:</label>

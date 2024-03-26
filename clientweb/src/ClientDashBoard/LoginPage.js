@@ -1,45 +1,38 @@
-import React, { useEffect } from 'react'
-import StudentLogin from './StudentLogin'
-import Navbar from './Navbar'
+import React, { useEffect } from "react";
+import StudentLogin from "./StudentLogin";
+import { Link } from "react-router-dom";
 
-const LoginPage = ({setId,setIsLoggedIn,setDish}) => {
-   
+const LoginPage = ({ setId, setIsLoggedIn, setDish }) => {
   const checkLocalStorage = () => {
-    const isLoggedInString = localStorage.getItem('isLoggedIn');
+    const isLoggedInString = localStorage.getItem("isLoggedIn");
     let isLoggedIn = false;
-   
-    if (isLoggedInString === 'true') {
+
+    if (isLoggedInString === "true") {
       isLoggedIn = true;
     }
-    console.log(isLoggedIn)
+    console.log(isLoggedIn);
     setIsLoggedIn(isLoggedIn);
   };
   const handleLogout = () => {
-    localStorage.setItem('isLoggedIn', false.toString());
+    localStorage.setItem("isLoggedIn", false.toString());
     setIsLoggedIn(false);
-    setDish([])
-   
+    setDish([]);
   };
-
 
   useEffect(() => {
     checkLocalStorage();
-  
   });
- useEffect(() => {
+  useEffect(() => {
     handleLogout();
-    
-  },[]);
-    
+  }, []);
+
   return (
     <div>
       
 
-      
-         <StudentLogin setId={setId}/>
-      
+      <StudentLogin setId={setId} />
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;

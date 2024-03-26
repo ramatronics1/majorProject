@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Link } from 'react-router-dom';
 import './App.css';
 
 import EachHotel from './AdminDashboard/EachHotel';
 import AdminHome from './AdminDashboard/adminHome';
-import AdminLogin from './AdminDashboard/LoginPage';
+import AdminLogin from './AdminDashboard/AdminLoginPage';
 import UploadScreen from './AdminDashboard/UploadScreen';
 import EditDishScreen from './AdminDashboard/EditDishScreen';
 import DisplayDishes from './AdminDashboard/DisplayDishes';
@@ -12,9 +12,12 @@ import PreviousOrders from './ClientDashBoard/PreviousOrders';
 import LoginPage from './ClientDashBoard/LoginPage';
 import Navbar from './ClientDashBoard/Navbar';
 import EntryPage from './ClientDashBoard/EntryPage';
-import HotelDisplay from './AdminDashboard/HotelDisplay';
+
 import AdminSignup from './AdminDashboard/AdminSignup';
 import HotelRegister from './AdminDashboard/HotelRegister';
+
+import AdminHotelDisplay from './AdminDashboard/AdminHotelDisplay';
+
 function App() {
   const [dish, setDish] = useState([]);
   const [show, setShow] = useState(true);
@@ -62,25 +65,31 @@ function App() {
   return (
     <div className="App">
     
-      
+   
      <Navbar size={dish.length} setShow={setShow} setDish={setDish} id={id} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn}/>
-     
-  {/* <HotelRegister/> */}
+      
+      
+        
 
       <Routes>
       <Route path="/" element={<LoginPage setId={setId} setIsLoggedIn={setIsLoggedIn} setDish={setDish}/>} />
         <Route path="/adminHome" element={<AdminHome />} />
         <Route path="/PreviousOrders" element={<PreviousOrders id={id}/>}/>
         <Route path="/adminLogin" element={<AdminLogin />} />
-        <Route path="/hotel/:id" element={<EachHotel />} />
+        <Route path="/Admin/hotel/:id" element={<EachHotel />} />
+     
+        <Route path="/HotelDisplay" element={<AdminHotelDisplay />} />
+       
+        <Route path="/Admin/HotelRegister" element={<HotelRegister />} />
         
-        <Route path="/UploadScreen" element={<UploadScreen />} />
+        <Route path="/hotel/:hotelId" element={<AdminHome/>} />
+        <Route path="/hotel/:hotelId/UploadScreen" element={<UploadScreen/>} />
         <Route path="/EditDishScreen" element={<EditDishScreen />} />
-        <Route path="/DisplayDishes" element={<DisplayDishes />} />
+        <Route path="/hotelRegister" element={<HotelRegister/>}/>
+        <Route path="/DisplayDishes/:hotelId" element={<DisplayDishes dish={dish} warn={warn} setDish={setDish} handleChange={handleChange} show={show} handleClick={handleClick}/>} />
         <Route path="/adminSignup/:hotelId" element={<AdminSignup />} />
-        <Route path="/adminLogin/:hotelId" element={<AdminLogin />} /> 
-        <Route path="/HotelDisplay" element={<HotelDisplay />} />      
-        <Route path="/EntryPage" element={<EntryPage dish={dish} warn={warn} setDish={setDish} handleChange={handleChange} show={show} handleClick={handleClick} />} />
+        <Route path="/adminLogin/:hotelId" element={<AdminLogin />} />      
+        <Route path="/EntryPage/:hotelId" element={<EntryPage dish={dish} warn={warn} setDish={setDish} handleChange={handleChange} show={show} handleClick={handleClick} />} />
 
       </Routes>
     </div>

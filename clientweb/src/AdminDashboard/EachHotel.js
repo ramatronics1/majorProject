@@ -1,56 +1,57 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import axios from "axios";
+import DisplayDishes from "./DisplayDishes";
+import styles from './EachHotel.module.css'
 
 const EachHotel = () => {
   const [data, setData] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const { id } = useParams();
+
+  const checkLocalStorage = () => {
+    const isLoggedInString = localStorage.getItem("isLoggedIn");
+    let isLoggedIn = false;
+    if (isLoggedInString === "true") {
+      isLoggedIn = !isLoggedIn;
+    }
+    setIsLoggedIn(isLoggedIn);
+  };
 
   const fetchHotel = async () => {
     try {
       const response = await axios.post(`http://localhost:5000/hotel/${id}`);
       setData(response.data);
     } catch (error) {
-      console.error('Error fetching hotel:', error);
+      console.error("Error fetching hotel:", error);
     }
   };
 
   useEffect(() => {
+    checkLocalStorage();
+  }, []);
+
+  useEffect(() => {
     fetchHotel();
-  }, [id]); // Make sure to include id in the dependency array to re-fetch when id changes
+  }, [id]);
 
   return (
     <div>
       <h1>Hotel Details</h1>
       {data ? (
-        <div>
+        <div style={{display:'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '5px'}}>
           <p>Hotel ID: {data._id}</p>
-          <div>{data.name}</div>
-        <div>{data.description}</div>
-        <div>{data.phone}</div>
-        <div>{data.email}</div>
-        {data.imageUrl.map((image, imageIndex) => (
-          <img
-            key={`${data._id}-image-${imageIndex}`} 
-            src={image.url}
-            alt={`Description of image ${imageIndex + 1}`}
-            style={{ width: '100px', height: 'auto', marginBottom: '8px' }}
-          />
-        ))}
-          <p>want to sign up?</p>
-          {/* Pass the hotel ID as state */}
-
-          <button>
-            <Link to={{ pathname: `/adminSignup/${data._id}` }}>
-              Sign Up
-            </Link>
-           
-          </button>
-          <button>
-          <Link to={{ pathname: `/adminLogin/${data._id}` }}>
-              Login 
-            </Link>
-            </button>
+          {!isLoggedIn && (
+            <div>
+              <p>want to sign up?</p>{" "}
+              <Link className={styles.btnAdmin} to={{ pathname: `/adminSignup/${data._id}` }}>Sign Up</Link>{" "}
+              <Link className={styles.btnAdmin} to={{ pathname: `/adminLogin/${data._id}` }}>Login</Link>
+            </div>
+          )}{" "}
+          <Link className={styles.btnAdmin} to={{ pathname: `/EntryPage/${data._id}` }}>
+            Display dishes?
+          </Link>
         </div>
       ) : (
         <p>Loading...</p>
